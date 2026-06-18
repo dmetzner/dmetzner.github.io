@@ -5,3 +5,5 @@ dist
 .vscode/*
 !.vscode/extensions.json
 npm-debug.log*
+.idea
+*.tsbuildinfo

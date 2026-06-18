@@ -496,6 +496,15 @@ export default function App() {
                   <span className="til-date mono">{dateFmt(p.pubDate)}</span>
                   <span className="til-title">{p.title}</span>
                   <span className="til-desc">{p.description}</span>
+                  {p.tags.length > 0 && (
+                    <span className="til-tags mono">
+                      {p.tags.slice(0, 3).map((tg) => (
+                        <span className="til-tag" key={tg}>
+                          {tg}
+                        </span>
+                      ))}
+                    </span>
+                  )}
                 </a>
               </motion.li>
             ))}

@@ -525,11 +525,11 @@ export default function App() {
         </div>
         <div className="footer-legal mono">
           <button type="button" onClick={() => setLegal("impressum")}>
-            Impressum
+            {t.impressum}
           </button>
           <span aria-hidden>·</span>
           <button type="button" onClick={() => setLegal("privacy")}>
-            Datenschutz
+            {t.privacy}
           </button>
         </div>
         <p className="footer-note mono">

@@ -88,6 +88,8 @@ export const config = {
       writingTitle: "Writing",
       writingAll: "all notes →",
       footer: "built with react + typescript + claude",
+      impressum: "Imprint",
+      privacy: "Privacy",
     },
     de: {
       status: "verfügbar · aus österreich",
@@ -103,6 +105,8 @@ export const config = {
       writingTitle: "Notizen",
       writingAll: "alle notizen →",
       footer: "gebaut mit react + typescript",
+      impressum: "Impressum",
+      privacy: "Datenschutz",
     },
   } satisfies Record<Lang, Record<string, string>>,
 };

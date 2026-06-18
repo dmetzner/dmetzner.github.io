@@ -1,0 +1,146 @@
+:root,
+:root[data-theme="dark"] {
+  --bg: #070708;
+  --bg-soft: #0d0d10;
+  --panel: rgba(255, 255, 255, 0.025);
+  --panel-border: rgba(255, 255, 255, 0.08);
+  --text: #e7e7ea;
+  --text-dim: #8b8b94;
+  --text-faint: #7d7d86; /* bumped for WCAG AA on the dark bg */
+
+  --cyan: #2ee6e6;
+  --violet: #b06bff;
+  --glow-cyan: rgba(46, 230, 230, 0.55);
+  --glow-violet: rgba(176, 107, 255, 0.45);
+
+  /* atmosphere (radial glows + grid) */
+  --atmo-1: rgba(46, 230, 230, 0.1);
+  --atmo-2: rgba(176, 107, 255, 0.1);
+  --grid-line: rgba(255, 255, 255, 0.022);
+
+  /* gradient used for the top "DANIEL" line of the name */
+  --name-top: linear-gradient(180deg, #fff 0%, #9a9aa5 100%);
+
+  --mono: "JetBrains Mono", ui-monospace, monospace;
+  --display: "Syne", sans-serif;
+  --body: "Hanken Grotesk", system-ui, sans-serif;
+}
+
+/* root mode — danger-red accents (duck stays yellow; it's hard-coded) */
+:root[data-root] {
+  --cyan: #ff5470;
+  --glow-cyan: rgba(255, 84, 112, 0.5);
+}
+
+:root[data-theme="light"] {
+  --bg: #f4f4f6;
+  --bg-soft: #ffffff;
+  --panel: rgba(12, 12, 24, 0.03);
+  --panel-border: rgba(12, 12, 24, 0.1);
+  --text: #15151a;
+  --text-dim: #4a4a55;
+  --text-faint: #5e5e69; /* darkened to clear WCAG AA on the light bg */
+
+  /* darker accents so they stay legible (AA) as text on a light background */
+  --cyan: #0a7d7d;
+  --violet: #7c3aed;
+  --glow-cyan: rgba(10, 155, 155, 0.3);
+  --glow-violet: rgba(124, 58, 237, 0.25);
+
+  --atmo-1: rgba(10, 155, 155, 0.1);
+  --atmo-2: rgba(124, 58, 237, 0.12);
+  --grid-line: rgba(12, 12, 24, 0.04);
+
+  --name-top: linear-gradient(180deg, #15151a 0%, #4a4a55 100%);
+}
+
+/* visible keyboard focus everywhere (WCAG 2.4.7) */
+:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden; /* belt-and-suspenders against stray horizontal scroll */
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  transition:
+    background 0.3s,
+    color 0.3s;
+}
+
+/* ── atmosphere: layered radial glows + faint grid ── */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background:
+    radial-gradient(600px 600px at 15% 10%, var(--atmo-1), transparent 60%),
+    radial-gradient(700px 700px at 85% 90%, var(--atmo-2), transparent 60%), var(--bg);
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse 100% 80% at 50% 0%, #000 30%, transparent 90%);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+::selection {
+  background: var(--cyan);
+  color: #04110f;
+}
+
+/* thin custom scrollbar */
+::-webkit-scrollbar {
+  width: 9px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: #1d1d22;
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #2a2a31;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

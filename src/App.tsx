@@ -537,7 +537,7 @@ export default function App() {
         </p>
       </footer>
 
-      <Legal kind={legal} onClose={() => setLegal(null)} />
+      <Legal kind={legal} lang={lang} onClose={() => setLegal(null)} />
     </main>
   );
 }

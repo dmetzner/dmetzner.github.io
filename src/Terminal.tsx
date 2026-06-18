@@ -59,13 +59,25 @@ export default function Terminal({
   }, [history, playing]);
 
   function answer(q: string) {
-    push("sys", "🦆 thinking…");
-    ai.generate([
-      { role: "system", content: systemPrompt(lang) },
-      { role: "user", content: q },
-    ])
-      .then((ans) => push("out", `🦆 ${ans.trim()}`))
-      .catch((err) => push("out", `🦆 model error: ${err}`));
+    // one line we keep updating: "thinking…" → streamed tokens → final answer
+    const id = nextId();
+    setHistory((h) => [...h, { id, kind: "out", content: "🦆 thinking…" }]);
+    const update = (content: ReactNode) =>
+      setHistory((h) => h.map((l) => (l.id === id ? { ...l, content } : l)));
+
+    let acc = "";
+    ai.generate(
+      [
+        { role: "system", content: systemPrompt(lang) },
+        { role: "user", content: q },
+      ],
+      (tok) => {
+        acc += tok;
+        update(`🦆 ${acc}`);
+      },
+    )
+      .then((ans) => update(`🦆 ${ans.trim()}`))
+      .catch((err) => update(`🦆 model error: ${err}`));
   }
 
   // once the model finishes downloading, answer whatever was queued
@@ -82,7 +94,6 @@ export default function Terminal({
       );
       push("sys", "everything else in the shell still works — try `about`, `projects`, `snake`.");
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ai.status]);
 
   function enterRoot() {
@@ -104,10 +115,13 @@ export default function Terminal({
 
     const [cmd, ...args] = line.replace(/^\//, "").split(/\s+/);
     const a = args.join(" ").toLowerCase();
+    const c = cmd.toLowerCase();
 
-    track(`cmd-${cmd.toLowerCase()}`); // command name only — never the typed args
+    // command name only (never the typed args), and only a known verb — so
+    // free-typed junk can't blow up the analytics path cardinality.
+    track(KNOWN_CMDS.has(c) ? `cmd-${c}` : "cmd-unknown");
 
-    switch (cmd.toLowerCase()) {
+    switch (c) {
       case "help":
         push(
           "out",
@@ -351,7 +365,8 @@ export default function Terminal({
     );
     push("sys", "resolving ip …");
     try {
-      const res = await fetch("https://ipwho.is/");
+      // bail after 5s so a slow/blocked lookup doesn't hang on "resolving ip …"
+      const res = await fetch("https://ipwho.is/", { signal: AbortSignal.timeout(5000) });
       const d = await res.json();
       if (!d || d.success === false || !d.ip) throw new Error("ip");
       const loc = [d.city, d.country_code].filter(Boolean).join(", ");
@@ -485,6 +500,45 @@ export default function Terminal({
     </div>
   );
 }
+
+// every verb the dispatch switch handles — keeps analytics paths bounded
+const KNOWN_CMDS = new Set([
+  "help",
+  "about",
+  "whoami",
+  "projects",
+  "ls",
+  "theme",
+  "lang",
+  "sudo",
+  "su",
+  "exit",
+  "logout",
+  "reset",
+  "pwd",
+  "uname",
+  "date",
+  "man",
+  "rm",
+  "ai",
+  "ask",
+  "chat",
+  "neofetch",
+  "sport",
+  "coffee",
+  "joke",
+  "history",
+  "vim",
+  "nano",
+  ":q",
+  ":q!",
+  ":wq",
+  "cowsay",
+  "ducksay",
+  "snake",
+  "clear",
+  "echo",
+]);
 
 const JOKES = [
   "there are 10 kinds of people: those who get binary and those who don't.",

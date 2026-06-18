@@ -22,6 +22,7 @@
     <link rel="apple-touch-icon" href="/favicon.svg" />
 
     <title>Daniel Metzner — Full-stack Developer</title>
+    <link rel="canonical" href="https://daniel.metzner.uk/" />
     <meta
       name="description"
       content="Daniel Metzner — full-stack developer. Code, projects and where to find me."
@@ -43,7 +44,24 @@
     <!-- fonts are self-hosted (see src/fonts.css) — no third-party requests -->
   </head>
   <body>
-    <div id="root"></div>
+    <!-- Static fallback for non-JS crawlers/scrapers. React replaces #root's
+         contents on mount, so this is never seen by users on a normal load.
+         Mirrors the hero copy so the page has real text even before JS runs. -->
+    <div id="root">
+      <main style="max-width: 720px; margin: 12vh auto; padding: 0 24px; font-family: system-ui, sans-serif; color: #e7e7ea">
+        <h1>Daniel Metzner</h1>
+        <p>Full-stack Developer · based in Austria.</p>
+        <p>
+          I build from the database up to the pixels — robust, usable systems,
+          open source, software security, and mentoring.
+        </p>
+        <p>
+          <a href="https://www.linkedin.com/in/daniel-metzner/" style="color: #2ee6e6">LinkedIn</a>
+          ·
+          <a href="https://github.com/dmetzner" style="color: #2ee6e6">GitHub</a>
+        </p>
+      </main>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

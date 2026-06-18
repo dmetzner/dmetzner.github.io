@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>404 · Daniel Metzner</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <script>
+      try {
+        const p = localStorage.getItem("theme");
+        document.documentElement.dataset.theme =
+          p === "light" || p === "dark"
+            ? p
+            : matchMedia("(prefers-color-scheme: light)").matches
+              ? "light"
+              : "dark";
+      } catch (e) {}
+    </script>
+    <style>
+      @font-face {
+        font-family: "Syne";
+        font-weight: 800;
+        font-display: swap;
+        src: url("/fonts/syne-800-latin.woff2") format("woff2");
+      }
+      @font-face {
+        font-family: "JetBrains Mono";
+        font-weight: 500;
+        font-display: swap;
+        src: url("/fonts/jetbrains-mono-500-latin.woff2") format("woff2");
+      }
+      :root,
+      :root[data-theme="dark"] {
+        --bg: #070708;
+        --text: #e7e7ea;
+        --dim: #8b8b94;
+        --cyan: #2ee6e6;
+        --violet: #b06bff;
+      }
+      :root[data-theme="light"] {
+        --bg: #f4f4f6;
+        --text: #15151a;
+        --dim: #4a4a55;
+        --cyan: #0a7d7d;
+        --violet: #7c3aed;
+      }
+      * {
+        margin: 0;
+        box-sizing: border-box;
+      }
+      body {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 18px;
+        padding: 24px;
+        text-align: center;
+        background:
+          radial-gradient(600px 500px at 50% 0%, rgba(46, 230, 230, 0.08), transparent 60%),
+          var(--bg);
+        color: var(--text);
+        font-family: "JetBrains Mono", ui-monospace, monospace;
+      }
+      .duck {
+        width: 76px;
+        height: auto;
+        animation: bob 2.8s ease-in-out infinite;
+      }
+      @keyframes bob {
+        50% {
+          transform: translateY(-6px) rotate(-3deg);
+        }
+      }
+      h1 {
+        font-family: "Syne", sans-serif;
+        font-weight: 800;
+        font-size: clamp(3rem, 14vw, 5.5rem);
+        line-height: 1;
+        background: linear-gradient(100deg, var(--cyan), var(--violet));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+      p {
+        color: var(--dim);
+        font-size: 0.95rem;
+      }
+      a {
+        margin-top: 6px;
+        color: var(--cyan);
+        text-decoration: none;
+        border: 1px solid currentColor;
+        border-radius: 10px;
+        padding: 11px 22px;
+        font-size: 0.9rem;
+        transition: background 0.2s;
+      }
+      a:hover {
+        background: color-mix(in srgb, var(--cyan) 12%, transparent);
+      }
+      a:focus-visible {
+        outline: 2px solid var(--cyan);
+        outline-offset: 3px;
+      }
+    </style>
+  </head>
+  <body>
+    <svg class="duck" viewBox="0 0 50 40" role="img" aria-label="duck">
+      <defs>
+        <linearGradient id="d" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#ffe15c" />
+          <stop offset="1" stop-color="#f6b400" />
+        </linearGradient>
+      </defs>
+      <path d="M9 20 L1 16 L4 27 Z" fill="url(#d)" />
+      <ellipse cx="21" cy="26" rx="15" ry="10.5" fill="url(#d)" />
+      <circle cx="34" cy="14" r="8.5" fill="url(#d)" />
+      <path d="M41 11 H49 L46 16.5 H41 Z" fill="#ef8b1f" />
+      <circle cx="35.5" cy="12" r="1.7" fill="#0a0a0f" />
+    </svg>
+    <h1>404</h1>
+    <p>this page waddled off. let's get you back to dry land.</p>
+    <a href="/">← back home</a>
+  </body>
+</html>

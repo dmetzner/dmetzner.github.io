@@ -17,6 +17,22 @@
       } catch {}
     </script>
 
+    <!-- preload the two fonts the hero paints first (name + bio) to cut FOUT -->
+    <link
+      rel="preload"
+      href="/fonts/syne-800-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/hanken-grotesk-400-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
     <!-- favicons -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/favicon.svg" />
@@ -41,6 +57,25 @@
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="https://daniel.metzner.uk/og.png" />
+
+    <!-- structured data: lets search engines model the page as a Person
+         (richer SERP, knowledge-panel eligibility) -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Daniel Metzner",
+        "url": "https://daniel.metzner.uk/",
+        "image": "https://daniel.metzner.uk/og.png",
+        "jobTitle": "Full-stack Developer",
+        "nationality": "Austria",
+        "sameAs": [
+          "https://www.linkedin.com/in/daniel-metzner/",
+          "https://github.com/dmetzner"
+        ]
+      }
+    </script>
+
     <!-- fonts are self-hosted (see src/fonts.css) — no third-party requests -->
   </head>
   <body>

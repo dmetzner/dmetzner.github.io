@@ -25,6 +25,7 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci
+      - run: npm run check # typecheck + biome + vitest — block deploy on a red gate
       - run: npm run build
       - uses: actions/upload-pages-artifact@v5
         with:

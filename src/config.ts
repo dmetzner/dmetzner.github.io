@@ -40,8 +40,8 @@ export const config = {
       url: "https://github.com/Catrobat",
       logo: "catrobat",
       description: {
-        en: "Catrobat's free coding apps for kids — build on your phone with Catroid, share and remix on Catroweb. I'm the lead developer and product owner of the share platform.",
-        de: "Catrobats kostenlose Programmier-Apps für Kinder: mit Catroid am Handy programmieren, auf Catroweb teilen und remixen. Die Share-Plattform leite ich als Lead Developer und Product Owner.",
+        en: "Catrobat's free coding apps for kids — build on your phone with Catroid, share and remix on Catroweb. I support the share platform as a lead developer and product owner.",
+        de: "Catrobats kostenlose Programmier-Apps für Kinder: mit Catroid am Handy programmieren, auf Catroweb teilen und remixen. Die Share-Plattform unterstütze ich als Lead Developer und Product Owner.",
       },
       tags: ["Lead dev & PO", "Symfony", "Open source"],
     },
@@ -75,7 +75,7 @@ export const config = {
   // Add or tweak wording per language. `de` = German, `en` = English.
   copy: {
     en: {
-      status: "available · based in austria",
+      status: "based in austria",
       role: "Full-stack Developer",
       about:
         "I build from the database up to the pixels. " +
@@ -87,13 +87,13 @@ export const config = {
       projectsSub: "",
       writingTitle: "Writing",
       writingSub: "Latest from my Today I Learned blog, til.metzner.uk",
-      writingAll: "all notes →",
+      writingAll: "all posts →",
       footer: "built with react + typescript + claude",
       impressum: "Imprint",
       privacy: "Privacy",
     },
     de: {
-      status: "verfügbar · aus österreich",
+      status: "aus österreich",
       role: "Full-Stack-Entwickler · Dipl.-Ing.",
       about:
         "Ich baue von der Datenbank bis zu den Pixeln. " +
@@ -103,9 +103,9 @@ export const config = {
       copied: "kopiert ✓",
       projectsTitle: "Woran ich gerade arbeite",
       projectsSub: "",
-      writingTitle: "Notizen",
+      writingTitle: "Beiträge",
       writingSub: "Neueste aus meinem Today I Learned Blog, til.metzner.uk",
-      writingAll: "alle notizen →",
+      writingAll: "alle Beiträge →",
       footer: "gebaut mit react + typescript + claude",
       impressum: "Impressum",
       privacy: "Datenschutz",

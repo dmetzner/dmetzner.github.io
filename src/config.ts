@@ -104,7 +104,7 @@ export const config = {
       projectsSub: "",
       writingTitle: "Notizen",
       writingAll: "alle notizen →",
-      footer: "gebaut mit react + typescript",
+      footer: "gebaut mit react + typescript + claude",
       impressum: "Impressum",
       privacy: "Datenschutz",
     },

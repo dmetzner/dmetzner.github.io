@@ -381,8 +381,19 @@ export default function App() {
           custom={2}
         >
           &gt;{" "}
-          <span className={root ? "editable" : ""} {...ed("role")}>
-            {val("role", t.role)}
+          {/* split on " · " so each segment (e.g. "Dipl.-Ing.") sits on its own
+              line — avoids ugly mid-word wraps on narrow screens. In root mode we
+              render the raw string so contentEditable round-trips the separator. */}
+          <span className={`role-text${root ? " editable" : ""}`} {...ed("role")}>
+            {root
+              ? val("role", t.role)
+              : val("role", t.role)
+                  .split(" · ")
+                  .map((part) => (
+                    <span className="role-line" key={part}>
+                      {part}
+                    </span>
+                  ))}
           </span>
           <span className="caret" />
         </motion.p>
@@ -455,29 +466,6 @@ export default function App() {
         </div>
       </motion.section>
 
-      {/* ── PLAYGROUND (interactive CLI) ── */}
-      <motion.section
-        className="playground"
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, margin: "-80px" }}
-      >
-        <motion.h2 className="section-title" variants={fadeUp}>
-          <span className="section-idx mono">02</span> Playground
-        </motion.h2>
-        <motion.div variants={fadeUp} custom={1}>
-          <Terminal
-            lang={lang}
-            setLang={setLang}
-            themePref={themePref}
-            setTheme={setThemePref}
-            root={root}
-            setRoot={setRoot}
-            onResetEdits={resetEdits}
-          />
-        </motion.div>
-      </motion.section>
-
       {/* ── WRITING (latest TIL notes) ── */}
       {til.posts.length > 0 && (
         <motion.section
@@ -487,11 +475,21 @@ export default function App() {
           viewport={{ once: true, margin: "-80px" }}
         >
           <motion.h2 className="section-title" variants={fadeUp}>
-            <span className="section-idx mono">03</span> {t.writingTitle}
+            <span className="section-idx mono">02</span> {t.writingTitle}
           </motion.h2>
           {t.writingSub && (
             <motion.p className="section-sub" variants={fadeUp} custom={1}>
-              {t.writingSub}
+              {/* linkify the bare "til.metzner.uk" mention → the blog */}
+              {t.writingSub.split("til.metzner.uk").flatMap((part, i) =>
+                i === 0
+                  ? [part]
+                  : [
+                      <a key="til" href={config.blog.url} target="_blank" rel="noreferrer">
+                        til.metzner.uk
+                      </a>,
+                      part,
+                    ],
+              )}
             </motion.p>
           )}
           <ul className="til-list">
@@ -519,6 +517,29 @@ export default function App() {
           </a>
         </motion.section>
       )}
+
+      {/* ── PLAYGROUND (interactive CLI) — kept last; it's a toy, not the pitch ── */}
+      <motion.section
+        className="playground"
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, margin: "-80px" }}
+      >
+        <motion.h2 className="section-title" variants={fadeUp}>
+          <span className="section-idx mono">03</span> Playground
+        </motion.h2>
+        <motion.div variants={fadeUp} custom={1}>
+          <Terminal
+            lang={lang}
+            setLang={setLang}
+            themePref={themePref}
+            setTheme={setThemePref}
+            root={root}
+            setRoot={setRoot}
+            onResetEdits={resetEdits}
+          />
+        </motion.div>
+      </motion.section>
 
       {/* ── FOOTER ── */}
       <footer className="footer">

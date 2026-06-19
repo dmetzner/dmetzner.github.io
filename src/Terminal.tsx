@@ -36,6 +36,10 @@ export default function Terminal({
   const [playing, setPlaying] = useState(false);
   const [running, setRunning] = useState(false);
   const [pendingAsk, setPendingAsk] = useState<string | null>(null);
+  // on mobile the soft keyboard eats ~90% of the inline terminal, so once the
+  // user actually types we promote it to a full-screen sheet (output + input
+  // stacked above the keyboard). Desktop never enters this mode.
+  const [full, setFull] = useState(false);
 
   const ai = useAi();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -57,6 +61,24 @@ export default function Terminal({
   useEffect(() => {
     bodyRef.current?.scrollTo?.({ top: bodyRef.current.scrollHeight });
   }, [history, playing]);
+
+  // lock background scroll while the full-screen sheet is open
+  useEffect(() => {
+    if (!full) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [full]);
+
+  const isMobile = () =>
+    typeof window !== "undefined" && window.matchMedia("(max-width: 760px)").matches;
+
+  const closeFull = () => {
+    setFull(false);
+    inputRef.current?.blur();
+  };
 
   function answer(q: string) {
     // one line we keep updating: "thinking…" → streamed tokens → final answer
@@ -385,7 +407,9 @@ export default function Terminal({
   }
 
   function onKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.key === "Enter") {
+    if (e.key === "Escape" && full) {
+      closeFull();
+    } else if (e.key === "Enter") {
       run(input);
       setInput("");
       setRecallIdx(-1);
@@ -408,7 +432,7 @@ export default function Terminal({
 
   return (
     <div
-      className={`cli${root ? " cli-root" : ""}`}
+      className={`cli${root ? " cli-root" : ""}${full ? " cli-full" : ""}`}
       onClick={() => !playing && inputRef.current?.focus()}
     >
       <div className="cli-bar">
@@ -443,6 +467,20 @@ export default function Terminal({
                   ? "ai unavailable"
                   : "type help"}
         </span>
+        {full && (
+          <button
+            type="button"
+            className="cli-close"
+            onClick={(e) => {
+              e.stopPropagation();
+              closeFull();
+            }}
+            aria-label="close fullscreen terminal"
+            title="close"
+          >
+            ✕
+          </button>
+        )}
       </div>
 
       <div className="cli-body" ref={bodyRef}>
@@ -469,6 +507,12 @@ export default function Terminal({
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={onKeyDown}
+              onFocus={() => {
+                if (!isMobile()) return;
+                setFull(true);
+                // keep the input above the keyboard once it animates in
+                setTimeout(() => inputRef.current?.scrollIntoView({ block: "center" }), 300);
+              }}
               spellCheck={false}
               autoComplete="off"
               autoCapitalize="off"

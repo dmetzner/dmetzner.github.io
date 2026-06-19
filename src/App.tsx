@@ -489,6 +489,11 @@ export default function App() {
           <motion.h2 className="section-title" variants={fadeUp}>
             <span className="section-idx mono">03</span> {t.writingTitle}
           </motion.h2>
+          {t.writingSub && (
+            <motion.p className="section-sub" variants={fadeUp} custom={1}>
+              {t.writingSub}
+            </motion.p>
+          )}
           <ul className="til-list">
             {til.posts.map((p, i) => (
               <motion.li className="til-item" variants={fadeUp} custom={i} key={p.url}>

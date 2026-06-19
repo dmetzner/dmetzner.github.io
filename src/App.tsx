@@ -389,11 +389,19 @@ export default function App() {
               ? val("role", t.role)
               : val("role", t.role)
                   .split(" · ")
-                  .map((part) => (
-                    <span className="role-line" key={part}>
-                      {part}
-                    </span>
-                  ))}
+                  .flatMap((part, i, arr) => {
+                    const seg = (
+                      <span className="role-line" key={part}>
+                        {part}
+                      </span>
+                    );
+                    // " ·" glues the dot to the preceding segment; the
+                    // trailing normal space is the only break point, so a wrap
+                    // gives "… ·" / "next" rather than a dangling "· next".
+                    return i < arr.length - 1
+                      ? [seg, <span key={`${part}-sep`}>{" · "}</span>]
+                      : [seg];
+                  })}
           </span>
           <span className="caret" />
         </motion.p>

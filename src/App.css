@@ -249,18 +249,20 @@
   font-size: clamp(1rem, 2.4vw, 1.35rem);
   color: var(--cyan);
   margin-top: 26px;
-  display: flex;
-  align-items: center;
+  /* normal inline flow: the ">" leads the first line and the caret trails the
+     last word. Wraps to two lines only when too narrow to fit on one. */
 }
-/* each " · "-separated segment on its own line (e.g. "Dipl.-Ing." breaks off) */
+/* keep each segment whole — a wrap happens between segments, never mid-word
+   (so "Dipl.-Ing." never splits at its hyphen). */
 .role-line {
-  display: block;
+  white-space: nowrap;
 }
 .caret {
   display: inline-block;
   width: 9px;
   height: 1.1em;
   margin-left: 6px;
+  vertical-align: text-bottom;
   background: var(--cyan);
   box-shadow: 0 0 8px var(--glow-cyan);
   animation: blink 1.05s steps(1) infinite;

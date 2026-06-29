@@ -4,6 +4,7 @@ import { initAnalytics } from "./analytics";
 import { config, type FeaturedProject, type Lang } from "./config";
 import { Duck } from "./Duck";
 import Legal, { type LegalKind } from "./Legal";
+import Room from "./Room";
 import Terminal from "./Terminal";
 import { useLang } from "./useLang";
 import { useTheme } from "./useTheme";
@@ -581,6 +582,7 @@ export default function App() {
       </footer>
 
       <Legal kind={legal} lang={lang} onClose={() => setLegal(null)} />
+      <Room lang={lang} />
     </main>
   );
 }

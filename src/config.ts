@@ -71,6 +71,19 @@ export const config = {
     goatcounter: "metzner",
   },
 
+  // Live "room" — opt-in presence + emoji reactions shared between visitors who
+  // are on the page at the same time. Realtime is impossible on static GitHub
+  // Pages, so it rides a Supabase Realtime channel (broadcast + presence only —
+  // no database rows, nothing persisted). Both values empty = feature OFF and no
+  // connection is ever made. The anon key is public by design (RLS-safe: there
+  // are no tables to reach); paste a project from an EU region for clean GDPR.
+  // Privacy is preserved by *opt-in*: the browser connects (and only then sends
+  // an IP to Supabase) when the visitor clicks "enter the room" — never on load.
+  room: {
+    url: "https://ivvjxeirjofilyrhnkuu.supabase.co",
+    anonKey: "sb_publishable_GvyuwPa9pPDx1yjSzwU4IA_Ny-V_jBc",
+  },
+
   // ── ALL TRANSLATABLE COPY ──────────────────────────────────
   // Add or tweak wording per language. `de` = German, `en` = English.
   copy: {
@@ -91,6 +104,11 @@ export const config = {
       footer: "built with react + typescript + claude",
       impressum: "Imprint",
       privacy: "Privacy",
+      roomJoin: "enter the room",
+      roomLeave: "leave",
+      roomOnline: "here now",
+      roomConnecting: "connecting…",
+      roomHint: "live & opt-in — connects only when you join, sets no cookies, stores nothing",
     },
     de: {
       status: "aus österreich",
@@ -109,6 +127,12 @@ export const config = {
       footer: "gebaut mit react + typescript + claude",
       impressum: "Impressum",
       privacy: "Datenschutz",
+      roomJoin: "Raum betreten",
+      roomLeave: "verlassen",
+      roomOnline: "gerade hier",
+      roomConnecting: "verbinde…",
+      roomHint:
+        "live & freiwillig — verbindet erst beim Beitreten, setzt keine Cookies, speichert nichts",
     },
   } satisfies Record<Lang, Record<string, string>>,
 };

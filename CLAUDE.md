@@ -65,3 +65,9 @@ src/
 - **Root mode** (`sudo su`) sets `data-root` on `<html>` and makes hero text `contentEditable`;
   edits persist to `localStorage` per language. `reset` clears them.
 - External link hrefs from data (the TIL feed) go through `safeUrl()` — keep it that way.
+- **Live room (`Room.tsx`/`useRoom.ts`) is opt-in by design.** It must NOT auto-connect on
+  load — the connection is the first time a visitor's IP reaches Supabase, so it only opens on
+  the explicit "enter the room" click (same privacy stance as dropping Google Fonts). `supabase-js`
+  is `await import()`-ed inside `join()` so it stays a **lazy chunk** — never top-level import it.
+  Room state is ephemeral (presence + broadcast, no DB tables). `config.room` empty = feature off
+  and zero connections. Shares one EU Supabase project with the TIL blog's likes.

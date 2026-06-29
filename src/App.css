@@ -1161,3 +1161,121 @@
     flex-basis: 100%;
   }
 }
+
+/* ─────────────── LIVE ROOM (presence + reactions) ─────────────── */
+/* The reactions float up through a click-through overlay above everything. */
+.room-sky {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 40;
+}
+.room-react {
+  position: absolute;
+  bottom: 5.5rem;
+  transform: translateX(-50%);
+  font-size: 2rem;
+  line-height: 1;
+  filter: drop-shadow(0 0 10px var(--glow-cyan));
+  will-change: transform, opacity;
+}
+
+/* Opt-in dock, pinned bottom-centre. */
+.room-dock {
+  position: fixed;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 41;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border: 1px solid var(--panel-border);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--bg-soft) 86%, transparent);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 6px 28px rgba(0, 0, 0, 0.32);
+  font-size: 0.82rem;
+}
+.room-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 8px var(--glow-cyan);
+  animation: room-pulse 2s ease-in-out infinite;
+}
+@keyframes room-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+.room-join {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  background: none;
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+  padding: 2px 4px;
+}
+.room-join:disabled {
+  color: var(--text-dim);
+  cursor: progress;
+}
+.room-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+.room-emojis {
+  display: inline-flex;
+  gap: 2px;
+}
+.room-emoji {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 1.15rem;
+  line-height: 1;
+  padding: 4px;
+  border-radius: 8px;
+  transition:
+    transform 0.12s ease,
+    background 0.12s ease;
+}
+.room-emoji:hover {
+  transform: translateY(-2px) scale(1.15);
+  background: color-mix(in srgb, var(--cyan) 14%, transparent);
+}
+.room-emoji:active {
+  transform: scale(0.9);
+}
+.room-leave {
+  border: none;
+  background: none;
+  color: var(--text-faint);
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 2px 4px;
+  border-radius: 6px;
+}
+.room-leave:hover {
+  color: var(--text);
+}
+@media (prefers-reduced-motion: reduce) {
+  .room-dot {
+    animation: none;
+  }
+}

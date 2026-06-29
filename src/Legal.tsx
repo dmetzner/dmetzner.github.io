@@ -139,6 +139,21 @@ function Privacy({ de }: { de: boolean }) {
         deinem Browser; deine Eingaben verlassen dein Gerät nicht.
       </p>
 
+      {config.room.url && config.room.anonKey && (
+        <>
+          <h3>Live-Raum (optional)</h3>
+          <p>
+            Erst auf deine Eingabe hin („Raum betreten“) baut dein Browser eine Echtzeit-Verbindung
+            zu Supabase (EU-Region) auf; dabei wird deine IP-Adresse an Supabase übertragen. Solange
+            du im Raum bist, sehen gleichzeitig Anwesende eine anonyme Anwesenheitszahl und die
+            Emoji-Reaktionen, die du auslöst. Es werden keine Inhalte gespeichert, keine Cookies
+            gesetzt und keine personenbezogenen Profile gebildet; die Verbindung endet, sobald du
+            den Raum verlässt oder die Seite schließt. Rechtsgrundlage: deine Einwilligung durch
+            aktives Beitreten (Art. 6 Abs. 1 lit. a DSGVO).
+          </p>
+        </>
+      )}
+
       <h3>Deine Rechte &amp; Kontakt</h3>
       <p>
         Auskunft, Berichtigung und Löschung: {email}. Durch den Betreiber selbst werden keine
@@ -184,6 +199,20 @@ function Privacy({ de }: { de: boolean }) {
         address to the provider. The model then runs entirely locally in your browser; your inputs
         never leave your device.
       </p>
+
+      {config.room.url && config.room.anonKey && (
+        <>
+          <h3>Live room (optional)</h3>
+          <p>
+            Only on your request (“enter the room”) does your browser open a realtime connection to
+            Supabase (EU region); this transmits your IP address to Supabase. While you are in the
+            room, others present at the same time see an anonymous presence count and the emoji
+            reactions you trigger. No content is stored, no cookies are set, and no personal
+            profiles are built; the connection ends as soon as you leave the room or close the page.
+            Legal basis: your consent by actively joining (Art. 6(1)(a) GDPR).
+          </p>
+        </>
+      )}
 
       <h3>Your rights &amp; contact</h3>
       <p>

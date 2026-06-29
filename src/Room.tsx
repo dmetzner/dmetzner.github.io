@@ -1,4 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
+import { useState } from "react";
 import { config, type Lang } from "./config";
 import { useRoom } from "./useRoom";
 
@@ -7,10 +8,17 @@ const EMOJI = ["👋", "❤️", "🎉", "🔥", "🦆"];
 
 // The live "room": an opt-in presence counter + shared floating emoji reactions.
 // Renders nothing at all unless a Supabase channel is configured (config.room),
-// and never connects until the visitor clicks "enter the room".
+// and never connects until the visitor clicks "Join the room".
+//
+// UI is a quiet bottom-right pill that, at rest, only reads "·) live". Hover,
+// focus or tap expands it into a card that explains the feature before asking
+// the visitor to join — subtle when idle, self-explanatory on intent.
 export default function Room({ lang }: { lang: Lang }) {
   const room = useRoom();
   const t = config.copy[lang];
+  // Touch devices have no hover, so tapping the pill toggles the explainer open.
+  // Desktop also gets it via :hover / :focus-within (see .room-fab in App.css).
+  const [open, setOpen] = useState(false);
 
   if (!room.available) return null;
 
@@ -35,48 +43,64 @@ export default function Room({ lang }: { lang: Lang }) {
         </AnimatePresence>
       </div>
 
-      <div className="room-dock mono">
-        {room.joined ? (
-          <>
-            <span className="room-count" title={t.roomHint}>
-              <i className="room-dot" /> {room.count} {t.roomOnline}
-            </span>
-            <span className="room-emojis">
-              {EMOJI.map((e) => (
-                <button
-                  key={e}
-                  type="button"
-                  className="room-emoji"
-                  onClick={() => room.send(e)}
-                  aria-label={`send ${e}`}
-                >
-                  {e}
-                </button>
-              ))}
-            </span>
-            <button
-              type="button"
-              className="room-leave"
-              onClick={room.leave}
-              aria-label={t.roomLeave}
-              title={t.roomLeave}
-            >
-              ✕
-            </button>
-          </>
-        ) : (
+      {room.joined ? (
+        <div className="room-dock room-joined mono">
+          <span className="room-count">
+            <i className="room-dot" /> {room.count} {t.roomOnline}
+          </span>
+          <span className="room-emojis">
+            {EMOJI.map((e) => (
+              <button
+                key={e}
+                type="button"
+                className="room-emoji"
+                onClick={() => room.send(e)}
+                aria-label={`send ${e}`}
+              >
+                {e}
+              </button>
+            ))}
+          </span>
           <button
             type="button"
-            className="room-join"
-            onClick={room.join}
-            disabled={room.connecting}
-            title={t.roomHint}
+            className="room-leave"
+            onClick={room.leave}
+            aria-label={t.roomLeave}
+            title={t.roomLeave}
+          >
+            ✕
+          </button>
+        </div>
+      ) : (
+        <div className="room-fab mono" data-open={open || undefined}>
+          <button
+            type="button"
+            className="room-pill"
+            onClick={() => setOpen((o) => !o)}
+            aria-expanded={open}
+            aria-label={t.roomTitle}
           >
             <i className="room-dot" />
-            {room.connecting ? t.roomConnecting : t.roomJoin}
+            <span className="room-pill-label">{t.roomIdle}</span>
           </button>
-        )}
-      </div>
+          <div className="room-card" role="dialog" aria-label={t.roomTitle}>
+            <p className="room-card-title">
+              <i className="room-dot" /> {t.roomTitle}
+            </p>
+            <p className="room-card-body">{t.roomBody}</p>
+            <p className="room-card-hint">{t.roomHint}</p>
+            <button
+              type="button"
+              className="room-join"
+              onClick={room.join}
+              disabled={room.connecting}
+            >
+              {room.connecting ? t.roomConnecting : t.roomJoin}
+              {!room.connecting && <span aria-hidden> →</span>}
+            </button>
+          </div>
+        </div>
+      )}
     </>
   );
 }

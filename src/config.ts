@@ -36,16 +36,6 @@ export const config = {
   // FEATURED PROJECTS — hand-picked cards, rendered exactly as written here.
   featured: [
     {
-      name: "Catroid / Catroweb",
-      url: "https://github.com/Catrobat",
-      logo: "catrobat",
-      description: {
-        en: "Catrobat's free coding apps for kids — build on your phone with Catroid, share and remix on Catroweb. I support the share platform as a lead developer and product owner.",
-        de: "Catrobats kostenlose Programmier-Apps für Kinder: mit Catroid am Handy programmieren, auf Catroweb teilen und remixen. Die Share-Plattform unterstütze ich als Lead Developer und Product Owner.",
-      },
-      tags: ["Lead dev & PO", "Symfony", "Open source"],
-    },
-    {
       name: "niceshops",
       url: "https://www.niceshops.com",
       logo: "niceshops",
@@ -55,6 +45,16 @@ export const config = {
         de: "Bei niceshops entwickle ich E-Commerce für große Shops — von den Backend-Services bis zu den Storefronts, die unsere Kund:innen sehen.",
       },
       tags: ["Day job", "Full-stack", "Austria"],
+    },
+    {
+      name: "Catroid / Catroweb",
+      url: "https://github.com/Catrobat",
+      logo: "catrobat",
+      description: {
+        en: "Catrobat's free coding apps for kids — build on your phone with Catroid, share and remix on Catroweb. I support the share platform as a lead developer and product owner.",
+        de: "Catrobats kostenlose Programmier-Apps für Kinder: mit Catroid am Handy programmieren, auf Catroweb teilen und remixen. Die Share-Plattform unterstütze ich als Lead Developer und Product Owner.",
+      },
+      tags: ["Lead dev & PO", "Symfony", "Open source"],
     },
   ] as FeaturedProject[],
 
@@ -104,11 +104,14 @@ export const config = {
       footer: "built with react + typescript + claude",
       impressum: "Imprint",
       privacy: "Privacy",
-      roomJoin: "enter the room",
+      roomIdle: "live",
+      roomTitle: "Live visitors",
+      roomBody: "See who else is here right now — and send reactions together.",
+      roomJoin: "Join the room",
       roomLeave: "leave",
-      roomOnline: "here now",
+      roomOnline: "here",
       roomConnecting: "connecting…",
-      roomHint: "live & opt-in — connects only when you join, sets no cookies, stores nothing",
+      roomHint: "opt-in · connects only when you join · no cookies, nothing stored",
     },
     de: {
       status: "aus österreich",
@@ -127,12 +130,14 @@ export const config = {
       footer: "gebaut mit react + typescript + claude",
       impressum: "Impressum",
       privacy: "Datenschutz",
+      roomIdle: "live",
+      roomTitle: "Live-Besucher",
+      roomBody: "Sieh, wer gerade hier ist — und schickt euch gemeinsam Reaktionen.",
       roomJoin: "Raum betreten",
       roomLeave: "verlassen",
-      roomOnline: "gerade hier",
+      roomOnline: "hier",
       roomConnecting: "verbinde…",
-      roomHint:
-        "live & freiwillig — verbindet erst beim Beitreten, setzt keine Cookies, speichert nichts",
+      roomHint: "freiwillig · verbindet erst beim Beitreten · keine Cookies, nichts gespeichert",
     },
   } satisfies Record<Lang, Record<string, string>>,
 };

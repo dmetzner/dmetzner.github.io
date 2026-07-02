@@ -1,10 +1,7 @@
-import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { config, type Lang } from "./config";
+import { EMOJI } from "./reactions";
 import { useRoom } from "./useRoom";
-
-// On-brand: the rubber duck rides along with the usual reactions.
-const EMOJI = ["👋", "❤️", "🎉", "🔥", "🦆"];
 
 // The live "room": an opt-in presence counter + shared floating emoji reactions.
 // Renders nothing at all unless a Supabase channel is configured (config.room),
@@ -24,23 +21,16 @@ export default function Room({ lang }: { lang: Lang }) {
 
   return (
     <>
-      {/* full-viewport overlay the reactions float up through (click-through) */}
+      {/* full-viewport overlay the reactions float up through (click-through).
+          Each reaction plays a one-shot CSS float-up (react-float, 3.6s); the
+          useRoom timer unmounts it at REACTION_MS (3.8s), so no exit anim is
+          needed — it's gone before the keyframe would loop. */}
       <div className="room-sky" aria-hidden>
-        <AnimatePresence>
-          {room.reactions.map((r) => (
-            <motion.span
-              key={r.id}
-              className="room-react"
-              style={{ left: `${r.x * 100}%` }}
-              initial={{ opacity: 0, y: 24, scale: 0.4 }}
-              animate={{ opacity: [0, 1, 1, 0], y: "-42vh", scale: [0.4, 1.15, 1, 0.9] }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 3.6, ease: "easeOut", times: [0, 0.12, 0.7, 1] }}
-            >
-              {r.emoji}
-            </motion.span>
-          ))}
-        </AnimatePresence>
+        {room.reactions.map((r) => (
+          <span key={r.id} className="room-react" style={{ left: `${r.x * 100}%` }}>
+            {r.emoji}
+          </span>
+        ))}
       </div>
 
       {room.joined ? (

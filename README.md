@@ -1,6 +1,6 @@
 # daniel.metzner.uk — portfolio
 
-Dark-neon single-page portfolio with an interactive terminal. **React 18 + TypeScript + Vite**, bilingual (EN/DE), deployed to **GitHub Pages on every push to `main`** at [daniel.metzner.uk](https://daniel.metzner.uk).
+Dark-neon single-page portfolio with an interactive terminal. **React 19 + TypeScript + Vite**, bilingual (EN/DE), deployed to **GitHub Pages on every push to `main`** at [daniel.metzner.uk](https://daniel.metzner.uk).
 
 All personal content (name, links, projects, copy in both languages) lives in **`src/config.ts`**. Architecture notes and gotchas are in **CLAUDE.md** — read it before changing `src/`.
 

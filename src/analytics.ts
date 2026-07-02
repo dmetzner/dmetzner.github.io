@@ -9,7 +9,7 @@ export function initAnalytics() {
   if (!code) return;
   const s = document.createElement("script");
   s.async = true;
-  s.src = "//gc.zgo.at/count.js";
+  s.src = "/count.js"; // self-hosted (see public/count.js) — no third-party request
   s.setAttribute("data-goatcounter", `https://${code}.goatcounter.com/count`);
   document.head.appendChild(s); // auto-counts the pageview on load
 }

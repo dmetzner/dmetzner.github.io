@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { config } from "./config";
+import { sanitizeReaction } from "./reactions";
 
 // A floating emoji reaction in flight. `x` is a 0..1 fraction of the viewport
 // width so positions translate across any screen size.
@@ -19,6 +20,14 @@ export type Room = {
 // How long a reaction stays mounted; CSS drives the matching float-up animation.
 const REACTION_MS = 3800;
 const CHANNEL = "portfolio";
+
+// Cap on concurrently-mounted reactions. Anyone can broadcast to the channel
+// (the anon key is public), so an inbound flood is untrusted: once this many
+// reactions are on screen, further inbound ones are dropped rather than
+// spawning unbounded DOM nodes + timers. Your own sends are always shown.
+// At REACTION_MS ≈ 3.8s lifetime this bounds sustained inbound to ~10/s, well
+// above any legitimate reaction rate but far short of a flood/jank DoS.
+const MAX_ACTIVE_REACTIONS = 40;
 
 // Live presence + emoji reactions over a Supabase Realtime channel. The whole
 // point is privacy by opt-in: nothing connects until join() is called, so a
@@ -43,10 +52,19 @@ export function useRoom(): Room {
   // instead of opening an orphan connection.
   const wantedRef = useRef(false);
 
-  const addReaction = useCallback((emoji: string, x: number) => {
+  // Live count of mounted reactions, tracked in a ref so the cap check doesn't
+  // depend on stale render state and the updater stays pure.
+  const activeRef = useRef(0);
+
+  // `capped` gates against MAX_ACTIVE_REACTIONS for untrusted inbound broadcasts;
+  // your own sends pass capped=false so the UI always reflects your tap.
+  const addReaction = useCallback((emoji: string, x: number, capped = false) => {
+    if (capped && activeRef.current >= MAX_ACTIVE_REACTIONS) return; // drop the flood
     const id = crypto.randomUUID();
+    activeRef.current += 1;
     setReactions((r) => [...r, { id, emoji, x }]);
     setTimeout(() => {
+      activeRef.current -= 1;
       setReactions((r) => r.filter((reaction) => reaction.id !== id));
     }, REACTION_MS);
   }, []);
@@ -61,6 +79,7 @@ export function useRoom(): Room {
     setConnecting(false);
     setCount(0);
     setReactions([]);
+    activeRef.current = 0;
   }, []);
 
   const join = useCallback(async () => {
@@ -83,9 +102,11 @@ export function useRoom(): Room {
       .on("presence", { event: "sync" }, () => {
         setCount(Object.keys(channel.presenceState()).length);
       })
-      // biome-ignore lint/suspicious/noExplicitAny: broadcast payload is untyped
-      .on("broadcast", { event: "reaction" }, ({ payload }: any) => {
-        if (payload?.emoji) addReaction(String(payload.emoji), Number(payload.x) || 0.5);
+      // Inbound broadcasts are untrusted (public anon key): validate the emoji
+      // against the allow-list, clamp x, and cap the active count.
+      .on("broadcast", { event: "reaction" }, ({ payload }: { payload: unknown }) => {
+        const clean = sanitizeReaction(payload);
+        if (clean) addReaction(clean.emoji, clean.x, true);
       })
       .subscribe((status: string) => {
         if (status === "SUBSCRIBED") {

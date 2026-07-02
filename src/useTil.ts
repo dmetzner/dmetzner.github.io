@@ -12,28 +12,25 @@ export type TilPost = {
 
 // Fetches the latest notes from the TIL blog's posts.json (CORS-enabled).
 // Fails silently — the Writing section just doesn't render if the feed is down.
-export function useTil(limit = 3): { loading: boolean; posts: TilPost[] } {
-  const [state, setState] = useState<{ loading: boolean; posts: TilPost[] }>({
-    loading: true,
-    posts: [],
-  });
+export function useTil(limit = 3): { posts: TilPost[] } {
+  const [posts, setPosts] = useState<TilPost[]>([]);
 
   useEffect(() => {
     let alive = true;
     fetch(config.blog.feed)
       .then((r) => (r.ok ? r.json() : Promise.reject(new Error("feed"))))
-      .then((posts: TilPost[]) => {
+      .then((data: TilPost[]) => {
         // sanitize feed URLs — defends the rendered <a href> against a tampered feed
-        const clean = posts.slice(0, limit).map((p) => ({ ...p, url: safeUrl(p.url) }));
-        if (alive) setState({ loading: false, posts: clean });
+        const clean = data.slice(0, limit).map((p) => ({ ...p, url: safeUrl(p.url) }));
+        if (alive) setPosts(clean);
       })
       .catch(() => {
-        if (alive) setState({ loading: false, posts: [] });
+        if (alive) setPosts([]);
       });
     return () => {
       alive = false;
     };
   }, [limit]);
 
-  return state;
+  return { posts };
 }

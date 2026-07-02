@@ -6,7 +6,7 @@ before changing `src/`.
 
 ## Stack
 
-- React 18 + TS (strict) + Vite 5, ESM. **npm** (not pnpm). Biome 2.x (lint+format), Vitest.
+- React 19 + TS (strict) + Vite 8, ESM. **npm** (not pnpm). Biome 2.x (lint+format), Vitest. (Exact versions: see `package.json`.)
 - framer-motion. Self-hosted fonts. No CSS framework — hand-rolled `*.css`.
 - Local LLM via `@huggingface/transformers` (WebGPU, lazy). Cookieless GoatCounter analytics.
 - Deploys to **GitHub Pages on every push to `main`** (`.github/workflows/deploy.yml`), custom domain.
@@ -50,7 +50,7 @@ src/
 - **The AI needs WebGPU.** Without it, `ask` shows a graceful "needs WebGPU" message — expected,
   not a bug. WASM is forced single-threaded (`numThreads = 1`); the threaded build needs
   `SharedArrayBuffer` → COOP/COEP headers, **which GitHub Pages cannot set**. Don't add them.
-- **The model + 21 MB ORT wasm are lazy chunks** — only fetched when someone runs `ai`. Never
+- **The model + ~24 MB ORT wasm are lazy chunks** — only fetched when someone runs `ai`. Never
   import at the top level or the main bundle balloons. `vite.config.ts` excludes transformers
   from `optimizeDeps` on purpose.
 - **Fonts are self-hosted** (`src/fonts.css`, `public/fonts/`). Do NOT re-add the Google Fonts

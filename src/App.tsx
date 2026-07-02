@@ -1,5 +1,4 @@
-import { motion } from "framer-motion";
-import { type ReactNode, useEffect, useState } from "react";
+import { type ReactNode, useEffect, useRef, useState } from "react";
 import { initAnalytics } from "./analytics";
 import { config, type FeaturedProject, type Lang } from "./config";
 import { Duck } from "./Duck";
@@ -82,8 +81,35 @@ const NiceshopsLogo = () => (
   </svg>
 );
 
-// cubic-bezier easing — framer-motion 12 types this as a fixed 4-tuple, not number[]
-const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
+// Reveal a section on scroll: adds `.in-view` once it crosses into the viewport,
+// then disconnects (once-only, matching the old framer `viewport={{ once: true }}`).
+// Children carry the CSS fade-up and stagger (via --i); the class just triggers it.
+function useInView<T extends HTMLElement>() {
+  const ref = useRef<T>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    // No IntersectionObserver (old browsers, jsdom) → reveal immediately.
+    if (typeof IntersectionObserver === "undefined") {
+      el.classList.add("in-view");
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            el.classList.add("in-view");
+            io.disconnect();
+          }
+        }
+      },
+      { rootMargin: "-80px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  return ref;
+}
 
 // Copies the runtime-assembled email to the clipboard with brief feedback.
 // We never render a mailto: link (and never expose the address in an
@@ -139,7 +165,7 @@ function Coin() {
       title="flip me"
     >
       <span className="coin-face coin-front">
-        <img src="/avatar.png" alt="Daniel Metzner" width={120} height={120} />
+        <img src="/avatar.webp" alt="Daniel Metzner" width={120} height={120} />
       </span>
       <span className="coin-face coin-back" aria-hidden="true">
         <span className="coin-back-inner">
@@ -185,30 +211,14 @@ const WalkingDuck = () => (
   </svg>
 );
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  show: (i: number = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.7, delay: 0.1 + i * 0.08, ease: EASE },
-  }),
-};
-
 function FeaturedCard({ project, i, lang }: { project: FeaturedProject; i: number; lang: Lang }) {
-  const style = project.accent
-    ? ({ "--card-accent": project.accent } as React.CSSProperties)
-    : undefined;
+  // --i drives the CSS stagger delay; hover lift + fade-up now live in App.css.
+  const style = {
+    "--i": i,
+    ...(project.accent ? { "--card-accent": project.accent } : {}),
+  } as React.CSSProperties;
   return (
-    <motion.a
-      className="card"
-      href={project.url}
-      target="_blank"
-      rel="noreferrer"
-      style={style}
-      variants={fadeUp}
-      custom={i}
-      whileHover={{ y: -6 }}
-    >
+    <a className="card fade-up" href={project.url} target="_blank" rel="noreferrer" style={style}>
       <div className="card-top">
         <span className="card-name-wrap">
           {project.logo === "niceshops" && (
@@ -236,7 +246,7 @@ function FeaturedCard({ project, i, lang }: { project: FeaturedProject; i: numbe
           </span>
         ))}
       </div>
-    </motion.a>
+    </a>
   );
 }
 
@@ -260,6 +270,11 @@ export default function App() {
   const [root, setRoot] = useState(false);
   const [edits, setEdits] = useState<Edits>(loadEdits);
   const [legal, setLegal] = useState<LegalKind>(null);
+
+  // scroll-reveal refs (one per below-the-fold section)
+  const projectsRef = useInView<HTMLElement>();
+  const writingRef = useInView<HTMLElement>();
+  const playgroundRef = useInView<HTMLElement>();
 
   useEffect(() => {
     initAnalytics();
@@ -353,12 +368,12 @@ export default function App() {
 
       {/* ── HERO ── */}
       <section className="hero">
-        <motion.div className="status" variants={fadeUp} initial="hidden" animate="show" custom={0}>
+        <div className="status fade-up fade-load" style={{ "--i": 0 } as React.CSSProperties}>
           <i className="status-dot" />
           <span className="mono">{t.status}</span>
-        </motion.div>
+        </div>
 
-        <motion.h1 className="name" variants={fadeUp} initial="hidden" animate="show" custom={1}>
+        <h1 className="name fade-up fade-load" style={{ "--i": 1 } as React.CSSProperties}>
           <span className={`line${root ? " editable" : ""}`} {...ed("name1")}>
             {val("name1", "DANIEL")}
           </span>
@@ -372,15 +387,9 @@ export default function App() {
           <span className="avatar avatar-m">
             <Coin />
           </span>
-        </motion.h1>
+        </h1>
 
-        <motion.p
-          className="role mono"
-          variants={fadeUp}
-          initial="hidden"
-          animate="show"
-          custom={2}
-        >
+        <p className="role mono fade-up fade-load" style={{ "--i": 2 } as React.CSSProperties}>
           &gt;{" "}
           {/* split on " · " so each segment (e.g. "Dipl.-Ing.") sits on its own
               line — avoids ugly mid-word wraps on narrow screens. In root mode we
@@ -405,38 +414,29 @@ export default function App() {
                   })}
           </span>
           <span className="caret" />
-        </motion.p>
+        </p>
 
         {/* fade-up lives on the children, not this wrapper: a transform on
             .hero-bio would make it the containing block for the absolutely-
             positioned mobile avatar (which must anchor to .hero instead). */}
         <div className="hero-bio">
-          <motion.p
-            className={`about${root ? " editable" : ""}`}
-            variants={fadeUp}
-            initial="hidden"
-            animate="show"
-            custom={3}
+          <p
+            className={`about fade-up fade-load${root ? " editable" : ""}`}
+            style={{ "--i": 3 } as React.CSSProperties}
             {...ed("about")}
           >
             {val("about", t.about)}
-          </motion.p>
-          <motion.span
-            className="avatar"
-            variants={fadeUp}
-            initial="hidden"
-            animate="show"
-            custom={3}
-          >
+          </p>
+          <span className="avatar fade-up fade-load" style={{ "--i": 3 } as React.CSSProperties}>
             <Coin />
-          </motion.span>
+          </span>
         </div>
 
-        <motion.p className="cta-line" variants={fadeUp} initial="hidden" animate="show" custom={4}>
+        <p className="cta-line fade-up fade-load" style={{ "--i": 4 } as React.CSSProperties}>
           {t.cta}
-        </motion.p>
+        </p>
 
-        <motion.div className="cta" variants={fadeUp} initial="hidden" animate="show" custom={5}>
+        <div className="cta fade-up fade-load" style={{ "--i": 5 } as React.CSSProperties}>
           <a className="btn primary" href={config.linkedin} target="_blank" rel="noreferrer">
             LinkedIn
           </a>
@@ -449,23 +449,18 @@ export default function App() {
             GitHub
           </a>
           <CopyEmailButton className="btn ghost" idleLabel="Email" copiedLabel={t.copied} />
-        </motion.div>
+        </div>
       </section>
 
       {/* ── PROJECTS ── */}
-      <motion.section
-        className="projects"
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, margin: "-80px" }}
-      >
-        <motion.h2 className="section-title" variants={fadeUp}>
+      <section className="projects reveal" ref={projectsRef}>
+        <h2 className="section-title fade-up" style={{ "--i": 0 } as React.CSSProperties}>
           <span className="section-idx mono">01</span> {t.projectsTitle}
-        </motion.h2>
+        </h2>
         {t.projectsSub && (
-          <motion.p className="section-sub" variants={fadeUp} custom={1}>
+          <p className="section-sub fade-up" style={{ "--i": 1 } as React.CSSProperties}>
             {t.projectsSub}
-          </motion.p>
+          </p>
         )}
 
         <div className={`grid${config.featured.length === 1 ? " grid-single" : ""}`}>
@@ -473,21 +468,16 @@ export default function App() {
             <FeaturedCard project={p} i={i} lang={lang} key={p.name} />
           ))}
         </div>
-      </motion.section>
+      </section>
 
       {/* ── WRITING (latest TIL notes) ── */}
       {til.posts.length > 0 && (
-        <motion.section
-          className="writing"
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: "-80px" }}
-        >
-          <motion.h2 className="section-title" variants={fadeUp}>
+        <section className="writing reveal" ref={writingRef}>
+          <h2 className="section-title fade-up" style={{ "--i": 0 } as React.CSSProperties}>
             <span className="section-idx mono">02</span> {t.writingTitle}
-          </motion.h2>
+          </h2>
           {t.writingSub && (
-            <motion.p className="section-sub" variants={fadeUp} custom={1}>
+            <p className="section-sub fade-up" style={{ "--i": 1 } as React.CSSProperties}>
               {/* linkify the bare "til.metzner.uk" mention → the blog */}
               {t.writingSub.split("til.metzner.uk").flatMap((part, i) =>
                 i === 0
@@ -499,11 +489,15 @@ export default function App() {
                       part,
                     ],
               )}
-            </motion.p>
+            </p>
           )}
           <ul className="til-list">
             {til.posts.map((p, i) => (
-              <motion.li className="til-item" variants={fadeUp} custom={i} key={p.url}>
+              <li
+                className="til-item fade-up"
+                style={{ "--i": i } as React.CSSProperties}
+                key={p.url}
+              >
                 <a href={p.url} target="_blank" rel="noreferrer">
                   <span className="til-date mono">{dateFmt(p.pubDate)}</span>
                   <span className="til-title">{p.title}</span>
@@ -518,26 +512,21 @@ export default function App() {
                     </span>
                   )}
                 </a>
-              </motion.li>
+              </li>
             ))}
           </ul>
           <a className="til-all mono" href={config.blog.url} target="_blank" rel="noreferrer">
             {t.writingAll}
           </a>
-        </motion.section>
+        </section>
       )}
 
       {/* ── PLAYGROUND (interactive CLI) — kept last; it's a toy, not the pitch ── */}
-      <motion.section
-        className="playground"
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, margin: "-80px" }}
-      >
-        <motion.h2 className="section-title" variants={fadeUp}>
+      <section className="playground reveal" ref={playgroundRef}>
+        <h2 className="section-title fade-up" style={{ "--i": 0 } as React.CSSProperties}>
           <span className="section-idx mono">03</span> Playground
-        </motion.h2>
-        <motion.div variants={fadeUp} custom={1}>
+        </h2>
+        <div className="fade-up" style={{ "--i": 1 } as React.CSSProperties}>
           <Terminal
             lang={lang}
             setLang={setLang}
@@ -547,8 +536,8 @@ export default function App() {
             setRoot={setRoot}
             onResetEdits={resetEdits}
           />
-        </motion.div>
-      </motion.section>
+        </div>
+      </section>
 
       {/* ── FOOTER ── */}
       <footer className="footer">

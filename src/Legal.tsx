@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import type { Lang } from "./config";
 import { config } from "./config";
 
@@ -16,11 +16,46 @@ export default function Legal({
   lang: Lang;
   onClose: () => void;
 }) {
+  const panelRef = useRef<HTMLDivElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
+
   useEffect(() => {
     if (!kind) return;
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    // Remember what had focus so we can restore it when the modal closes.
+    const opener = document.activeElement as HTMLElement | null;
+    // Move focus into the modal (the close button) on open.
+    closeRef.current?.focus();
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+        return;
+      }
+      // Trap Tab within the panel so focus can't escape behind the overlay.
+      if (e.key !== "Tab") return;
+      const panel = panelRef.current;
+      if (!panel) return;
+      const focusable = panel.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
+      );
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      const active = document.activeElement;
+      if (e.shiftKey && active === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && active === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      // Restore focus to the element that opened the modal.
+      opener?.focus?.();
+    };
   }, [kind, onClose]);
 
   if (!kind) return null;
@@ -29,6 +64,7 @@ export default function Legal({
   return (
     <div className="legal-overlay" onClick={onClose}>
       <div
+        ref={panelRef}
         className="legal-panel"
         role="dialog"
         aria-modal="true"
@@ -44,6 +80,7 @@ export default function Legal({
         onClick={(e) => e.stopPropagation()}
       >
         <button
+          ref={closeRef}
           type="button"
           className="legal-close"
           onClick={onClose}

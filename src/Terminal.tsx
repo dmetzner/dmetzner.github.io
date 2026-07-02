@@ -483,7 +483,7 @@ export default function Terminal({
         )}
       </div>
 
-      <div className="cli-body" ref={bodyRef}>
+      <div className="cli-body" ref={bodyRef} role="log" aria-live="polite">
         {history.map((l) => (
           <div key={l.id} className={`cli-line cli-${l.kind}`}>
             {l.content}

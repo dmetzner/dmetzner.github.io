@@ -8,6 +8,51 @@
   font-family: var(--mono);
 }
 
+/* ─────────────── FADE-UP REVEALS ───────────────
+   Replaces framer-motion. Two entrances share one keyframe:
+   • .fade-load — hero elements animate on mount (staggered by --i).
+   • .reveal .fade-up — below-the-fold sections stay hidden until App.tsx's
+     IntersectionObserver adds .in-view to the .reveal container, then play
+     (also staggered by --i). Hover lift and the reaction float live elsewhere. */
+@keyframes fade-up-kf {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.fade-up {
+  /* stagger: 0.1s base + 0.08s per index — matches the old framer delays */
+  --fade-delay: calc(0.1s + var(--i, 0) * 0.08s);
+}
+/* on-mount (hero) */
+.fade-load {
+  opacity: 0;
+  animation: fade-up-kf 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--fade-delay);
+}
+/* on-scroll (sections): hidden until the container is revealed */
+.reveal .fade-up {
+  opacity: 0;
+}
+.reveal.in-view .fade-up {
+  animation: fade-up-kf 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--fade-delay);
+}
+@media (prefers-reduced-motion: reduce) {
+  /* honor the user's preference: no motion, just show the content */
+  .fade-load,
+  .reveal .fade-up,
+  .reveal.in-view .fade-up {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
 /* ─────────────── TOP-RIGHT CONTROLS ─────────────── */
 .controls {
   position: fixed;
@@ -362,11 +407,13 @@
   min-height: 168px;
   transition:
     border-color 0.3s,
-    box-shadow 0.3s;
+    box-shadow 0.3s,
+    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .card:hover {
   border-color: color-mix(in srgb, var(--card-accent, var(--cyan)) 45%, transparent);
   box-shadow: 0 18px 50px -28px var(--card-accent, var(--glow-cyan));
+  transform: translateY(-6px); /* replaces framer whileHover={{ y: -6 }} */
 }
 .card-top {
   display: flex;
@@ -1174,11 +1221,34 @@
 .room-react {
   position: absolute;
   bottom: 5.5rem;
-  transform: translateX(-50%);
   font-size: 2rem;
   line-height: 1;
   filter: drop-shadow(0 0 10px var(--glow-cyan));
   will-change: transform, opacity;
+  /* one-shot float-up (was framer AnimatePresence). useRoom unmounts each
+     reaction at REACTION_MS (3.8s), just after this 3.6s keyframe ends, so it
+     never loops and needs no exit animation. */
+  animation: react-float 3.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+/* keyframe %s mirror the old framer times [0, 0.12, 0.7, 1]; translateX(-50%)
+   keeps the emoji horizontally centered on its `left` anchor throughout. */
+@keyframes react-float {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 24px) scale(0.4);
+  }
+  12% {
+    opacity: 1;
+    transform: translate(-50%, calc(-42vh * 0.12)) scale(1.15);
+  }
+  70% {
+    opacity: 1;
+    transform: translate(-50%, calc(-42vh * 0.7)) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -42vh) scale(0.9);
+  }
 }
 
 /* The joined state: a compact bar tucked in the bottom-right corner. */

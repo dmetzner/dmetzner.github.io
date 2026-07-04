@@ -1,4 +1,4 @@
-import { type ReactNode, useEffect, useRef, useState } from "react";
+import { type ReactNode, useCallback, useEffect, useRef, useState } from "react";
 import { initAnalytics } from "./analytics";
 import { config, type FeaturedProject, type Lang } from "./config";
 import { Duck } from "./Duck";
@@ -84,10 +84,14 @@ const NiceshopsLogo = () => (
 // Reveal a section on scroll: adds `.in-view` once it crosses into the viewport,
 // then disconnects (once-only, matching the old framer `viewport={{ once: true }}`).
 // Children carry the CSS fade-up and stagger (via --i); the class just triggers it.
+// Callback ref (not useRef+useEffect): sections like "writing" mount late, once an
+// async fetch populates them, so the observer must attach whenever the node shows
+// up — not just once after the first render, or a late-mounting section never
+// gets `.in-view` and its .fade-up children stay opacity:0 forever.
 function useInView<T extends HTMLElement>() {
-  const ref = useRef<T>(null);
-  useEffect(() => {
-    const el = ref.current;
+  const cleanup = useRef<() => void>(() => {});
+  return useCallback((el: T | null) => {
+    cleanup.current();
     if (!el) return;
     // No IntersectionObserver (old browsers, jsdom) → reveal immediately.
     if (typeof IntersectionObserver === "undefined") {
@@ -106,9 +110,8 @@ function useInView<T extends HTMLElement>() {
       { rootMargin: "-80px" },
     );
     io.observe(el);
-    return () => io.disconnect();
+    cleanup.current = () => io.disconnect();
   }, []);
-  return ref;
 }
 
 // Copies the runtime-assembled email to the clipboard with brief feedback.

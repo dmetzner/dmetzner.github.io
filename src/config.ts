@@ -13,6 +13,7 @@ export type FeaturedProject = {
   tags?: string[];
   logo?: "niceshops" | "catrobat"; // optional brand logo rendered on the card
   accent?: string; // optional brand accent colour (hover + logo)
+  demo?: "niceshops" | "catrobat"; // optional interactive mini-demo rendered in the card body
 };
 
 export const config = {
@@ -40,9 +41,10 @@ export const config = {
       url: "https://www.niceshops.com",
       logo: "niceshops",
       accent: "#f2940e",
+      demo: "niceshops",
       description: {
-        en: "I help to build and ship e-commerce at scale at niceshops — from backend services to the storefronts our customers see.",
-        de: "Bei niceshops entwickle ich E-Commerce für große Shops — von den Backend-Services bis zu den Storefronts, die unsere Kund:innen sehen.",
+        en: "Senior full-stack developer at niceshops — DevOps, backend, frontend. I help ship e-commerce at scale across the whole chain: from marketing to delivery.",
+        de: "Senior Full-Stack-Entwickler bei niceshops — DevOps, Backend, Frontend. Ich begleite E-Commerce in großem Maßstab über die ganze Kette: von Marketing bis Delivery.",
       },
       tags: ["Day job", "Full-stack", "Austria"],
     },
@@ -50,6 +52,7 @@ export const config = {
       name: "Catroid / Catroweb",
       url: "https://github.com/Catrobat",
       logo: "catrobat",
+      demo: "catrobat",
       description: {
         en: "Catrobat's free coding apps for kids — build on your phone with Catroid, share and remix on Catroweb. I support the share platform as a lead developer and product owner.",
         de: "Catrobats kostenlose Programmier-Apps für Kinder: mit Catroid am Handy programmieren, auf Catroweb teilen und remixen. Die Share-Plattform unterstütze ich als Lead Developer und Product Owner.",
@@ -141,3 +144,119 @@ export const config = {
     },
   } satisfies Record<Lang, Record<string, string>>,
 };
+
+// ─────────────────────────────────────────────────────────────
+//  niceshops brands — the shops & own-labels shown in the card's
+//  logo marquee. `path` is relative to niceshops.com; `logo` is a
+//  Storyblok CDN base URL (a resize transform is appended at render
+//  time). Lifted from the niceshops storefront's own brand slider.
+// ─────────────────────────────────────────────────────────────
+export type Brand = { name: string; path: string; logo: string };
+
+export const niceshopsBrands: Brand[] = [
+  {
+    name: "3DJake",
+    path: "/shops/3djake",
+    logo: "https://a.storyblok.com/f/178467/281x91/1f37d76004/01_logo_3djake_90px.png",
+  },
+  {
+    name: "PURE SKIN FOOD",
+    path: "/eigenmarken/pure-skin-food",
+    logo: "https://a.storyblok.com/f/178467/281x91/604216ab29/01_logo_psf_90px.png",
+  },
+  {
+    name: "Ecco Verde",
+    path: "/shops/ecco-verde",
+    logo: "https://a.storyblok.com/f/178467/463x91/209a5e6a8d/logo_eccoverde_90px.png",
+  },
+  {
+    name: "Ayurveda101",
+    path: "/shops/ayurveda101",
+    logo: "https://a.storyblok.com/f/178467/232x91/49b55437cf/logo_ayurveda101_90px.png",
+  },
+  {
+    name: "Ecosplendo",
+    path: "/shops/Ecosplendo",
+    logo: "https://a.storyblok.com/f/178467/490x148/3c474eded2/02_logo_ecosplendo_490x148px.png",
+  },
+  {
+    name: "bloomling",
+    path: "/shops/bloomling",
+    logo: "https://a.storyblok.com/f/178467/229x91/3a6a7409f2/logo_bloomling_90px.png",
+  },
+  {
+    name: "Cosmeterie",
+    path: "/shops/cosmeterie",
+    logo: "https://a.storyblok.com/f/178467/319x90/9839fc1f62/logo_cosmeterie_90px.png",
+  },
+  {
+    name: "Equus Vitalis",
+    path: "/shops/equus-vitalis",
+    logo: "https://a.storyblok.com/f/178467/454x91/331d9d2589/logo_equusvitalis_90px.png",
+  },
+  {
+    name: "From Austria",
+    path: "/shops/from-austria",
+    logo: "https://a.storyblok.com/f/178467/314x91/a48d10bbd0/logo_fromaustria_90px.png",
+  },
+  {
+    name: "Peganto",
+    path: "/shops/peganto",
+    logo: "https://a.storyblok.com/f/178467/263x91/3e248563cb/logo_peganto_90px.png",
+  },
+  {
+    name: "Babymondino",
+    path: "/shops/babymondino",
+    logo: "https://a.storyblok.com/f/178467/304x91/2505d5cec5/logo_babymondino_90px.png",
+  },
+  {
+    name: "Geero",
+    path: "/eigenmarken/geero",
+    logo: "https://a.storyblok.com/f/178467/281x91/7799eb5a47/logo_geero_90px.png",
+  },
+  {
+    name: "Interismo",
+    path: "/shops/interismo",
+    logo: "https://a.storyblok.com/f/178467/280x91/3312d163f8/logo_interismo_90px.png",
+  },
+  {
+    name: "oh feliz",
+    path: "/shops/oh-feliz",
+    logo: "https://a.storyblok.com/f/178467/221x91/10d6d9f81f/logo_ohfeliz_90px.png",
+  },
+  {
+    name: "olibetta",
+    path: "/shops/olibetta",
+    logo: "https://a.storyblok.com/f/178467/486x91/28c33dda8f/logo_olibetta_90px.png",
+  },
+  {
+    name: "Piccantino",
+    path: "/shops/piccantino",
+    logo: "https://a.storyblok.com/f/178467/359x91/896b2ab00b/logo_piccantino_90px.png",
+  },
+  {
+    name: "playPolis",
+    path: "/shops/playpolis",
+    logo: "https://a.storyblok.com/f/178467/590x91/5df2891b56/logo_playpolis_90px.png",
+  },
+  {
+    name: "pools.shop",
+    path: "/shops/pools-shop",
+    logo: "https://a.storyblok.com/f/178467/360x91/7f0d7956bc/logo_poolsshop_90px.png",
+  },
+  {
+    name: "saaza",
+    path: "/shops/saaza",
+    logo: "https://a.storyblok.com/f/178467/253x91/c990919af8/logo_saaza_90px.png",
+  },
+  {
+    name: "VitalAbo",
+    path: "/shops/vitalabo",
+    logo: "https://a.storyblok.com/f/178467/399x91/71d295c0e5/logo_vitalabo_90px.png",
+  },
+  {
+    name: "Zoolini",
+    path: "/shops/zoolini",
+    logo: "https://a.storyblok.com/f/178467/231x90/616b5c8c0f/logo_zoolini_90px.png",
+  },
+];

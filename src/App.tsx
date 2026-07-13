@@ -1,5 +1,6 @@
 import { type ReactNode, useCallback, useEffect, useRef, useState } from "react";
 import { initAnalytics } from "./analytics";
+import { BrandsSlider, CatrowebSlider } from "./CardDemos";
 import { config, type FeaturedProject, type Lang } from "./config";
 import { Duck } from "./Duck";
 import Legal, { type LegalKind } from "./Legal";
@@ -220,8 +221,16 @@ function FeaturedCard({ project, i, lang }: { project: FeaturedProject; i: numbe
     "--i": i,
     ...(project.accent ? { "--card-accent": project.accent } : {}),
   } as React.CSSProperties;
+  // The card is a container, not a single <a>: the interactive demos below
+  // contain real <button>s, which can't legally nest inside an anchor. Instead a
+  // full-bleed overlay link (.card-link) makes the whole card clickable, while
+  // the demo sits above it and swallows its own clicks. Keyboard users still
+  // reach the link (it's focusable); the demo buttons come after it in tab order.
   return (
-    <a className="card fade-up" href={project.url} target="_blank" rel="noreferrer" style={style}>
+    <div className="card fade-up" style={style}>
+      <a className="card-link" href={project.url} target="_blank" rel="noreferrer">
+        <span className="sr-only">{project.name} ↗</span>
+      </a>
       <div className="card-top">
         <span className="card-name-wrap">
           {project.logo === "niceshops" && (
@@ -237,6 +246,8 @@ function FeaturedCard({ project, i, lang }: { project: FeaturedProject; i: numbe
         <span className="card-arrow">↗</span>
       </div>
       <p className="card-desc">{project.description[lang]}</p>
+      {project.demo === "catrobat" && <CatrowebSlider lang={lang} />}
+      {project.demo === "niceshops" && <BrandsSlider lang={lang} />}
       <div className="card-meta">
         {project.language && (
           <span className="tag">
@@ -249,7 +260,7 @@ function FeaturedCard({ project, i, lang }: { project: FeaturedProject; i: numbe
           </span>
         ))}
       </div>
-    </a>
+    </div>
   );
 }
 

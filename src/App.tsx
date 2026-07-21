@@ -61,6 +61,21 @@ const MailIcon = () => (
     <path d="m3.5 7 8.5 6 8.5-6" />
   </svg>
 );
+const CoffeeIcon = () => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M5 8h11v6a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4V8Z" />
+    <path d="M16 9h2.5a2.5 2.5 0 0 1 0 5H16" />
+    <path d="M8 2v2M12 2v2" />
+  </svg>
+);
 
 // niceshops smiley — recolorable via currentColor (mirrors the original brand SVG)
 const NiceshopsLogo = () => (
@@ -569,6 +584,9 @@ export default function App() {
             <GitHubIcon /> github
           </a>
           <CopyEmailButton idleLabel="email" copiedLabel={t.copied} icon={<MailIcon />} />
+          <a href={config.buymeacoffee} target="_blank" rel="noreferrer">
+            <CoffeeIcon /> coffee
+          </a>
         </div>
         <div className="footer-legal mono">
           <button type="button" onClick={() => setLegal("impressum")}>

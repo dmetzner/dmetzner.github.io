@@ -23,6 +23,7 @@ export const config = {
 
   // Links.
   linkedin: "https://www.linkedin.com/in/daniel-metzner/",
+  buymeacoffee: "https://buymeacoffee.com/metzner",
 
   // Email is kept split into local-part + host so the full address never
   // appears verbatim in the source, JS bundle, or static HTML — it's only
@@ -58,6 +59,16 @@ export const config = {
         de: "Catrobats kostenlose Programmier-Apps für Kinder: mit Catroid am Handy programmieren, auf Catroweb teilen und remixen. Die Share-Plattform unterstütze ich als Lead Developer und Product Owner.",
       },
       tags: ["Lead dev & PO", "Symfony", "Open source"],
+    },
+    {
+      name: "Verso",
+      url: "https://verso.metzner.uk",
+      accent: "#9c2f2b",
+      description: {
+        en: "Scan a book's barcode before you buy and instantly see if it's already on your — or a shared — shelf. A privacy-first, offline-capable PWA: local-first, with optional cloud sync and shared family libraries.",
+        de: "Scann den Strichcode eines Buchs vorm Kauf und sieh sofort, ob es schon in deinem — oder einem geteilten — Regal steht. Eine datenschutzfreundliche, offlinefähige PWA: local-first, mit optionaler Cloud-Sync und geteilten Familienbibliotheken.",
+      },
+      tags: ["Side project", "SvelteKit", "Privacy-first"],
     },
   ] as FeaturedProject[],
 

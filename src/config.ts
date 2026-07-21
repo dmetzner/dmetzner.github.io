@@ -70,6 +70,16 @@ export const config = {
       },
       tags: ["Side project", "SvelteKit", "Privacy-first"],
     },
+    {
+      name: "Overhead",
+      url: "https://overhead.metzner.uk",
+      accent: "#6366f1",
+      description: {
+        en: "A tiny Chrome & Firefox extension that injects the request headers you choose — toggle them per URL, pull a known set from JSON, or type one by hand. Local-only, open source, no ads.",
+        de: "Eine kleine Chrome- & Firefox-Erweiterung, die genau die Request-Header sendet, die du willst — pro URL schaltbar, aus JSON geladen oder von Hand getippt. Lokal, Open Source, ohne Werbung.",
+      },
+      tags: ["Side project", "Browser extension", "Open source"],
+    },
   ] as FeaturedProject[],
 
   // TIL blog — the portfolio fetches `feed` client-side to show the latest notes.

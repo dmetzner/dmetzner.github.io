@@ -3,6 +3,9 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+  # run the same gate on PRs (incl. dependabot's) so a red check never reaches main
+  pull_request:
+    branches: [main]
   workflow_dispatch:
   # monthly rebuild so security.txt's rolling Expires never lapses without a commit
   schedule:
@@ -13,10 +16,11 @@ permissions:
   pages: write
   id-token: write
 
-# allow one concurrent deploy; don't cancel in-progress production runs
+# one concurrent deploy, never cancelled mid-flight; PR checks get their own
+# per-ref group so a push to a PR supersedes its own stale run and nothing else
 concurrency:
-  group: pages
-  cancel-in-progress: false
+  group: ${{ github.event_name == 'pull_request' && format('pr-{0}', github.ref) || 'pages' }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   build:
@@ -25,12 +29,16 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v6
         with:
-          node-version: 20
+          # single source of truth, shared with local dev — CI and laptop can't drift.
+          # `.npmrc` sets engine-strict, so a dep that outgrows this Node fails at
+          # `npm ci` with a readable message instead of mid-test (see PR #19).
+          node-version-file: .nvmrc
           cache: npm
       - run: npm ci
       - run: npm run check # typecheck + biome + vitest — block deploy on a red gate
       - run: npm run build
       - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5
+        if: github.event_name != 'pull_request' # PRs only need the gate, not an artifact
         with:
           path: dist
           # default excludes dotfiles → drops .well-known/ and .nojekyll from the deploy
@@ -38,6 +46,7 @@ jobs:
 
   deploy:
     needs: build
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     environment:
       name: github-pages

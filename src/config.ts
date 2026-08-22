@@ -48,6 +48,16 @@ export const config = {
     return `${this.emailUser}@${this.emailHost}`;
   },
 
+  // The address the LEGAL pages print, which is deliberately not the one above. `config.email`
+  // is what a reader is invited to write to (the copy button, the terminal's `contact`); this is
+  // a dedicated alias for the imprint and the privacy policy. § 5 ECG requires a contact that
+  // WORKS, so it wants to be an address that can be re-pointed or, once harvested, burned
+  // without taking the human contact address down with it. Same split-at-runtime treatment.
+  legalUser: "legal",
+  get legalEmail() {
+    return `${this.legalUser}@${this.emailHost}`;
+  },
+
   // FEATURED PROJECTS — hand-picked cards, rendered exactly as written here.
   featured: [
     {

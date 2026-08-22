@@ -16,6 +16,19 @@ export type FeaturedProject = {
   demo?: "niceshops" | "catrobat"; // optional interactive mini-demo rendered in the card body
 };
 
+// A side project — rendered as a small tile under the two featured cards, so the
+// hierarchy on the page matches the real one (day job + lead role first).
+// `icon` names a file in /public/icons; `blurb` is ONE short line, not a paragraph.
+export type SideProject = {
+  name: string;
+  url: string;
+  icon: string; // path under /icons
+  accent: string;
+  blurb: Record<Lang, string>;
+  tag: Record<Lang, string>;
+  demo?: "mulatschak";
+};
+
 export const config = {
   name: "Daniel Metzner",
 
@@ -60,27 +73,57 @@ export const config = {
       },
       tags: ["Lead dev & PO", "Symfony", "Open source"],
     },
+  ] as FeaturedProject[],
+
+  // SIDE PROJECTS — smaller tiles. All four are live; the icons are each app's
+  // own mark, copied into /public/icons (never hot-linked from the other sites).
+  side: [
     {
       name: "Verso",
       url: "https://verso.metzner.uk",
+      icon: "/icons/verso.svg",
       accent: "#9c2f2b",
-      description: {
-        en: "Scan a book's barcode before you buy and instantly see if it's already on your — or a shared — shelf. A privacy-first, offline-capable PWA: local-first, with optional cloud sync and shared family libraries.",
-        de: "Scann den Strichcode eines Buchs vorm Kauf und sieh sofort, ob es schon in deinem — oder einem geteilten — Regal steht. Eine datenschutzfreundliche, offlinefähige PWA: local-first, mit optionaler Cloud-Sync und geteilten Familienbibliotheken.",
+      blurb: {
+        en: "Scan a book before you buy it — is it already on your shelf?",
+        de: "Buch scannen, bevor du es kaufst — steht es schon im Regal?",
       },
-      tags: ["Side project", "SvelteKit", "Privacy-first"],
+      tag: { en: "SvelteKit · PWA", de: "SvelteKit · PWA" },
+    },
+    {
+      name: "Tempo",
+      url: "https://tempo.metzner.uk",
+      icon: "/icons/tempo.svg",
+      accent: "#3f86e8",
+      blurb: {
+        en: "A training log that stays on your device. No feed, no ads.",
+        de: "Trainingstagebuch, das am Gerät bleibt. Kein Feed, keine Werbung.",
+      },
+      tag: { en: "Local-first", de: "Local-first" },
+    },
+    {
+      name: "Mulatschak",
+      url: "https://mulatschak.metzner.uk",
+      icon: "/icons/mulatschak.png",
+      accent: "#c2410c",
+      blurb: {
+        en: "The Austrian card game — in the browser and on Android, free.",
+        de: "Das österreichische Kartenspiel — im Browser und auf Android, gratis.",
+      },
+      tag: { en: "TypeScript", de: "TypeScript" },
+      demo: "mulatschak",
     },
     {
       name: "Overhead",
       url: "https://overhead.metzner.uk",
+      icon: "/icons/overhead.svg",
       accent: "#6366f1",
-      description: {
-        en: "A tiny Chrome & Firefox extension that injects the request headers you choose — toggle them per URL, pull a known set from JSON, or type one by hand. Local-only, open source, no ads.",
-        de: "Eine kleine Chrome- & Firefox-Erweiterung, die genau die Request-Header sendet, die du willst — pro URL schaltbar, aus JSON geladen oder von Hand getippt. Lokal, Open Source, ohne Werbung.",
+      blurb: {
+        en: "Send the request headers you choose — per URL, local only.",
+        de: "Genau die Request-Header senden, die du willst — pro URL, rein lokal.",
       },
-      tags: ["Side project", "Browser extension", "Open source"],
+      tag: { en: "Extension", de: "Erweiterung" },
     },
-  ] as FeaturedProject[],
+  ] as SideProject[],
 
   // TIL blog — the portfolio fetches `feed` client-side to show the latest notes.
   blog: {
@@ -115,13 +158,14 @@ export const config = {
       status: "based in austria",
       role: "Full-stack Developer",
       about:
-        "I build from the database up to the pixels. " +
-        "I care about robust, usable systems, open source, software security, and mentoring. " +
-        "Off the clock, I’m usually somewhere doing sport.",
-      cta: "Got something worth building? Let's talk.",
+        "Solving problems is what I enjoy most — from the database up to the interface. " +
+        "Security and open source matter to me, and I like passing on what I know. " +
+        "When I’m not with my family or coding, you’ll usually find me doing sport.",
+      cta: "Got an idea? Let’s hear it.",
       copied: "copied ✓",
       projectsTitle: "Currently working on",
       projectsSub: "",
+      sideTitle: "Side projects",
       writingTitle: "Writing",
       writingSub: "Latest from my Today I Learned blog, til.metzner.uk",
       writingAll: "all posts →",
@@ -141,15 +185,16 @@ export const config = {
       status: "aus österreich",
       role: "Full-Stack-Entwickler · Dipl.-Ing.",
       about:
-        "Ich baue von der Datenbank bis zu den Pixeln. " +
-        "Mir liegen robuste, benutzerfreundliche Systeme, Open Source, Security und Mentoring. " +
-        "Nach Feierabend findet man mich beim Sport.",
-      cta: "Lass uns was bauen, das bleibt.",
+        "Probleme zu lösen macht mir einfach Spaß — von der Datenbank bis ins Interface. " +
+        "Sicherheit und Open Source liegen mir am Herzen, und ich gebe mein Wissen gern weiter. " +
+        "Wenn ich nicht bei der Familie oder am Coden bin, findet man mich meistens beim Sport.",
+      cta: "Idee im Kopf? Her damit.",
       copied: "kopiert ✓",
       projectsTitle: "Woran ich gerade arbeite",
       projectsSub: "",
+      sideTitle: "Eigene Projekte",
       writingTitle: "Beiträge",
-      writingSub: "Neueste aus meinem Today I Learned Blog, til.metzner.uk",
+      writingSub: "Das Neueste aus meinem Today-I-Learned-Blog auf til.metzner.uk",
       writingAll: "alle Beiträge →",
       footer: "gebaut mit react + typescript + claude",
       impressum: "Impressum",

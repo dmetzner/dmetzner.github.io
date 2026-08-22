@@ -16,6 +16,20 @@ describe("config copy", () => {
   });
 });
 
+describe("side projects", () => {
+  it("each has a name, url, icon and both-language text", () => {
+    for (const p of config.side) {
+      expect(p.name).toBeTruthy();
+      expect(p.url).toMatch(/^https?:\/\//);
+      expect(p.icon, p.name).toMatch(/^\/icons\//);
+      for (const lang of ["en", "de"] as const) {
+        expect(p.blurb[lang], `${p.name}.blurb.${lang}`).toBeTruthy();
+        expect(p.tag[lang], `${p.name}.tag.${lang}`).toBeTruthy();
+      }
+    }
+  });
+});
+
 describe("featured projects", () => {
   it("each has a name, url and both-language descriptions", () => {
     for (const p of config.featured) {

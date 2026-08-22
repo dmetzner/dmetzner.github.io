@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Tempo">
+	<rect width="64" height="64" rx="14" fill="#0d1013" />
+	<!-- Three ascending bars: the mark is a bar chart and a metronome at once — progression
+	     over time, which is the entire product.
+
+	     The fills are the DARK theme's accent tokens (`--accent`, `--accent-strong` in
+	     `src/app.css`), because this file carries its own dark background wherever it is shown. The
+	     light theme's #1a5fc8 is 3.2:1 on that ground; these are 5.3:1. `icons.test.ts` holds this
+	     file, `scripts/make-icons.mjs` and the token to the same values — they were jade, from a
+	     brand that changed, for as long as the app could not be installed. -->
+	<rect x="13" y="36" width="9" height="15" rx="3" fill="#3f86e8" />
+	<rect x="27.5" y="26" width="9" height="25" rx="3" fill="#3f86e8" />
+	<rect x="42" y="13" width="9" height="38" rx="3" fill="#7cb0f2" />
+</svg>

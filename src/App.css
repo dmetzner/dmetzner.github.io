@@ -30,8 +30,7 @@
 }
 /* on-mount (hero) */
 .fade-load {
-  opacity: 0;
-  animation: fade-up-kf 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: fade-up-kf 0.7s cubic-bezier(0.22, 1, 0.36, 1) backwards;
   animation-delay: var(--fade-delay);
 }
 /* on-scroll (sections): hidden until the container is revealed */
@@ -39,7 +38,13 @@
   opacity: 0;
 }
 .reveal.in-view .fade-up {
-  animation: fade-up-kf 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  /* `backwards`, NOT `both`: a forwards-filling animation keeps applying its
+     `to` frame at the animation cascade origin, which outranks normal author
+     declarations — `transform: none` then silently beat every `:hover`
+     translate on this page. Backwards still covers the delay, and the end
+     state is declared here instead. */
+  opacity: 1;
+  animation: fade-up-kf 0.7s cubic-bezier(0.22, 1, 0.36, 1) backwards;
   animation-delay: var(--fade-delay);
 }
 @media (prefers-reduced-motion: reduce) {
@@ -396,6 +401,136 @@
 .grid-single {
   grid-template-columns: 1fr;
   max-width: 560px;
+}
+/* ── SIDE PROJECTS ───────────────────────────────────────────
+   Smaller than .card on purpose: the two featured cards are the day job and
+   the lead-dev role, and six equal tiles would flatten that difference. */
+.side-title {
+  margin: 34px 0 0;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: lowercase;
+  color: var(--text-faint);
+}
+.grid-side {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-top: 14px;
+}
+/* below this the four tiles are ~150px wide and .side-name ellipsizes
+   ("Mulatschak" → "Mula…") long before the page's 640px phone breakpoint */
+@media (max-width: 900px) {
+  .grid-side {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.side-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid var(--panel-border);
+  background: var(--panel);
+  text-decoration: none;
+  transition:
+    border-color 0.3s,
+    box-shadow 0.3s,
+    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.side-card:hover,
+.side-card:focus-visible {
+  border-color: color-mix(in srgb, var(--card-accent, var(--cyan)) 45%, transparent);
+  box-shadow: 0 14px 34px -24px var(--card-accent, var(--glow-cyan));
+  transform: translateY(-4px);
+}
+.side-head {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+}
+.side-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  flex-shrink: 0;
+  display: block;
+  /* Each mark brings its own background, and Tempo's is near-black (#0d1013) —
+     on the dark panel its tile edge vanishes and the bars look like they float.
+     `outline` with a negative offset, not an inset box-shadow: these icons are
+     opaque replaced content, and an inset shadow paints UNDER it. */
+  outline: 1px solid color-mix(in srgb, var(--text) 16%, transparent);
+  outline-offset: -1px;
+}
+.side-name {
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.side-card:hover .side-name {
+  color: var(--card-accent, var(--cyan));
+  transition: color 0.3s;
+}
+.side-head .card-arrow {
+  margin-left: auto;
+  font-size: 0.85rem;
+}
+.side-card:hover .card-arrow {
+  color: var(--card-accent, var(--cyan));
+  transform: translate(3px, -3px);
+}
+.side-blurb {
+  margin-top: 10px;
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  line-height: 1.45;
+}
+.side-tag {
+  margin-top: 12px;
+  font-size: 0.7rem;
+  color: var(--text-faint);
+}
+/* Mulatschak: three cards that fan out on hover. Purely decorative, and it has
+   to stay that way — the markup sits inside SideCard's <a> (App.tsx), which may
+   not contain interactive children. */
+.fan {
+  position: relative;
+  width: 22px;
+  height: 16px;
+  flex-shrink: 0;
+}
+.fan i {
+  position: absolute;
+  left: 6px;
+  bottom: 0;
+  width: 10px;
+  height: 14px;
+  border-radius: 2px;
+  background: var(--panel);
+  border: 1px solid color-mix(in srgb, var(--card-accent, var(--cyan)) 55%, transparent);
+  transform-origin: 50% 100%;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.side-card:hover .fan i:first-child,
+.side-card:focus-visible .fan i:first-child {
+  transform: rotate(-24deg) translateX(-2px);
+}
+.side-card:hover .fan i:last-child,
+.side-card:focus-visible .fan i:last-child {
+  transform: rotate(24deg) translateX(2px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .fan i {
+    transition: none;
+  }
 }
 .card {
   position: relative; /* anchors the full-bleed overlay link + demo layering */
@@ -1222,6 +1357,9 @@
   }
   .grid {
     grid-template-columns: 1fr;
+  }
+  .grid-side {
+    grid-template-columns: repeat(2, 1fr);
   }
   /* full-bleed CTA buttons read better under the thumb */
   .cta {

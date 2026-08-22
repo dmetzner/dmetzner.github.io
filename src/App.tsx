@@ -1,7 +1,7 @@
 import { type ReactNode, useCallback, useEffect, useRef, useState } from "react";
 import { initAnalytics } from "./analytics";
 import { BrandsSlider, CatrowebSlider } from "./CardDemos";
-import { config, type FeaturedProject, type Lang } from "./config";
+import { config, type FeaturedProject, type Lang, type SideProject } from "./config";
 import { Duck } from "./Duck";
 import Legal, { type LegalKind } from "./Legal";
 import Room from "./Room";
@@ -279,6 +279,43 @@ function FeaturedCard({ project, i, lang }: { project: FeaturedProject; i: numbe
   );
 }
 
+/**
+ * A side project: icon tile, name, one line, one tag.
+ *
+ * Unlike FeaturedCard this really is a single <a> — nothing inside it is
+ * interactive (the Mulatschak fan is decorative CSS), so no overlay link is
+ * needed and the whole tile is one tab stop.
+ */
+function SideCard({ project, i, lang }: { project: SideProject; i: number; lang: Lang }) {
+  const style = { "--i": i, "--card-accent": project.accent } as React.CSSProperties;
+  return (
+    <a
+      className="side-card fade-up"
+      style={style}
+      href={project.url}
+      target="_blank"
+      rel="noreferrer"
+    >
+      <span className="side-head">
+        <img className="side-icon" src={project.icon} alt="" aria-hidden="true" loading="lazy" />
+        <span className="side-name">{project.name}</span>
+        {/* decorative, CSS-only (App.css .fan) — an <a> may not contain
+            interactive children, which is why this is markup and not a widget */}
+        {project.demo === "mulatschak" && (
+          <span className="fan" aria-hidden="true">
+            <i />
+            <i />
+            <i />
+          </span>
+        )}
+        <span className="card-arrow">↗</span>
+      </span>
+      <span className="side-blurb">{project.blurb[lang]}</span>
+      <span className="side-tag mono">{project.tag[lang]}</span>
+    </a>
+  );
+}
+
 type Edits = Partial<Record<Lang, Record<string, string>>>;
 
 function loadEdits(): Edits {
@@ -497,6 +534,24 @@ export default function App() {
             <FeaturedCard project={p} i={i} lang={lang} key={p.name} />
           ))}
         </div>
+
+        {config.side.length > 0 && (
+          <>
+            <h3
+              className="side-title fade-up"
+              style={{ "--i": config.featured.length } as React.CSSProperties}
+            >
+              {t.sideTitle}
+            </h3>
+            <div className="grid-side">
+              {config.side.map((p, i) => (
+                // continue the page-wide stagger past the featured cards and
+                // the heading, so a tile never fades in before its own title
+                <SideCard project={p} i={i + config.featured.length + 1} lang={lang} key={p.name} />
+              ))}
+            </div>
+          </>
+        )}
       </section>
 
       {/* ── WRITING (latest TIL notes) ── */}

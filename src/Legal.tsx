@@ -95,7 +95,7 @@ export default function Legal({
 }
 
 function Impressum({ de }: { de: boolean }) {
-  const email = <a href={`mailto:${config.email}`}>{config.email}</a>;
+  const email = <a href={`mailto:${config.legalEmail}`}>{config.legalEmail}</a>;
   return de ? (
     <div className="legal-body">
       <h2>Impressum</h2>
@@ -133,7 +133,7 @@ function Impressum({ de }: { de: boolean }) {
 }
 
 function Privacy({ de }: { de: boolean }) {
-  const email = <a href={`mailto:${config.email}`}>{config.email}</a>;
+  const email = <a href={`mailto:${config.legalEmail}`}>{config.legalEmail}</a>;
   return de ? (
     <div className="legal-body">
       <h2>Datenschutzerklärung</h2>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Verso">
+	<rect width="512" height="512" rx="116" fill="#5d37b0" />
+	<path
+		d="M150 150 L256 366 L362 150"
+		fill="none"
+		stroke="#f4eee1"
+		stroke-width="52"
+		stroke-linecap="round"
+		stroke-linejoin="round"
+	/>
+	<circle cx="212" cy="214" r="11" fill="#5d37b0" />
+	<circle cx="300" cy="214" r="11" fill="#5d37b0" />
+</svg>

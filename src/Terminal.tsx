@@ -174,11 +174,16 @@ export default function Terminal({
         break;
       case "projects":
       case "ls":
-        for (const p of config.featured) {
+        // both tiers, in page order — the side projects are separate in config.ts
+        // (they render as smaller cards), but the shell is a flat list.
+        for (const p of [
+          ...config.featured.map((f) => ({ name: f.name, url: f.url, text: f.description[lang] })),
+          ...config.side.map((f) => ({ name: f.name, url: f.url, text: f.blurb[lang] })),
+        ]) {
           push(
             "out",
             <span>
-              <span className="cli-accent">{p.name}</span> — {p.description[lang]}{" "}
+              <span className="cli-accent">{p.name}</span> — {p.text}{" "}
               <a href={p.url} target="_blank" rel="noreferrer">
                 {p.url.replace(/^https?:\/\//, "")}
               </a>
@@ -595,7 +600,10 @@ const JOKES = [
 // grounds the local model in real facts so it answers as the portfolio's assistant
 function systemPrompt(lang: Lang): string {
   const c = config;
-  const projects = c.featured.map((p) => `${p.name} — ${p.description.en}`).join("; ");
+  const projects = [
+    ...c.featured.map((p) => `${p.name} — ${p.description.en}`),
+    ...c.side.map((p) => `${p.name} — ${p.blurb.en}`),
+  ].join("; ");
   return [
     `You are ${c.name}'s portfolio assistant. Answer the visitor's question directly`,
     `in 1-2 short sentences, ${lang === "de" ? "in German" : "in English"}. Do not repeat the question.`,

@@ -30,8 +30,7 @@
 }
 /* on-mount (hero) */
 .fade-load {
-  opacity: 0;
-  animation: fade-up-kf 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: fade-up-kf 0.7s cubic-bezier(0.22, 1, 0.36, 1) backwards;
   animation-delay: var(--fade-delay);
 }
 /* on-scroll (sections): hidden until the container is revealed */
@@ -39,7 +38,13 @@
   opacity: 0;
 }
 .reveal.in-view .fade-up {
-  animation: fade-up-kf 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  /* `backwards`, NOT `both`: a forwards-filling animation keeps applying its
+     `to` frame at the animation cascade origin, which outranks normal author
+     declarations — `transform: none` then silently beat every `:hover`
+     translate on this page. Backwards still covers the delay, and the end
+     state is declared here instead. */
+  opacity: 1;
+  animation: fade-up-kf 0.7s cubic-bezier(0.22, 1, 0.36, 1) backwards;
   animation-delay: var(--fade-delay);
 }
 @media (prefers-reduced-motion: reduce) {
@@ -415,6 +420,13 @@
   gap: 14px;
   margin-top: 14px;
 }
+/* below this the four tiles are ~150px wide and .side-name ellipsizes
+   ("Mulatschak" → "Mula…") long before the page's 640px phone breakpoint */
+@media (max-width: 900px) {
+  .grid-side {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
 .side-card {
   display: flex;
   flex-direction: column;
@@ -449,8 +461,10 @@
   display: block;
   /* Each mark brings its own background, and Tempo's is near-black (#0d1013) —
      on the dark panel its tile edge vanishes and the bars look like they float.
-     A hairline ring gives every icon an edge on either theme. */
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--text) 14%, transparent);
+     `outline` with a negative offset, not an inset box-shadow: these icons are
+     opaque replaced content, and an inset shadow paints UNDER it. */
+  outline: 1px solid color-mix(in srgb, var(--text) 16%, transparent);
+  outline-offset: -1px;
 }
 .side-name {
   font-family: var(--mono);
@@ -484,8 +498,9 @@
   font-size: 0.7rem;
   color: var(--text-faint);
 }
-/* Mulatschak: three cards that fan out on hover. Purely decorative — see
-   MulatschakFan in CardDemos.tsx for why it must stay non-interactive. */
+/* Mulatschak: three cards that fan out on hover. Purely decorative, and it has
+   to stay that way — the markup sits inside SideCard's <a> (App.tsx), which may
+   not contain interactive children. */
 .fan {
   position: relative;
   width: 22px;

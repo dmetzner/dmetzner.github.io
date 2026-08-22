@@ -545,7 +545,9 @@ export default function App() {
             </h3>
             <div className="grid-side">
               {config.side.map((p, i) => (
-                <SideCard project={p} i={i} lang={lang} key={p.name} />
+                // continue the page-wide stagger past the featured cards and
+                // the heading, so a tile never fades in before its own title
+                <SideCard project={p} i={i + config.featured.length + 1} lang={lang} key={p.name} />
               ))}
             </div>
           </>

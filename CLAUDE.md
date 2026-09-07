@@ -19,6 +19,18 @@ npm run build    # tsc -b && vite build  (typecheck is part of the build)
 npm run check    # tsc -b && biome check . && vitest run  — the pre-commit gate
 ```
 
+## How changes land
+
+**Every change goes through a pull request — no direct pushes to `main`.** Merging needs three
+things: this repo's gate green locally (`npm run check`), CI green, and an independent review
+with no unresolved high or major finding on the commit that gets merged.
+
+**A CI job that could not START is not a pass.** The Actions billing block dies in about three
+seconds with no logs and no steps; that is "could not run", and it is said out loud on the PR
+rather than merged past in silence.
+
+**The only exception is a project Daniel has explicitly called prototyping. This is not one.**
+
 ## Layout
 
 ```

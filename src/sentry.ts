@@ -6,7 +6,9 @@ import * as Sentry from "@sentry/browser";
 Sentry.init({
   dsn: "https://2d036a3bdb6b4b889a2c643ae4b8f394@app.glitchtip.com/26054",
   tracesSampleRate: 0,
-  sendDefaultPii: false, // no IP / user data attached (GlitchTip also scrubs IPs server-side)
+  // v11 replaced sendDefaultPii with dataCollection, and its defaults COLLECT (userInfo: true
+  // makes the server infer the visitor IP). Turn the PII categories off explicitly.
+  dataCollection: { userInfo: false, cookies: false, httpHeaders: false },
   ignoreErrors: [
     "ResizeObserver loop",
     "Non-Error promise rejection captured",

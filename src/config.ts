@@ -85,9 +85,21 @@ export const config = {
     },
   ] as FeaturedProject[],
 
-  // SIDE PROJECTS — smaller tiles. All four are live; the icons are each app's
+  // SIDE PROJECTS — smaller tiles. All six are live; the icons are each app's
   // own mark, copied into /public/icons (never hot-linked from the other sites).
   side: [
+    {
+      name: "Mulatschak",
+      url: "https://mulatschak.metzner.uk",
+      icon: "/icons/mulatschak.png",
+      accent: "#c2410c",
+      blurb: {
+        en: "The Austrian card game — in the browser and on Android, free.",
+        de: "Das österreichische Kartenspiel — im Browser und auf Android, gratis.",
+      },
+      tag: { en: "TypeScript", de: "TypeScript" },
+      demo: "mulatschak",
+    },
     {
       name: "Verso",
       url: "https://verso.metzner.uk",
@@ -100,6 +112,28 @@ export const config = {
       tag: { en: "SvelteKit · PWA", de: "SvelteKit · PWA" },
     },
     {
+      name: "DailyPresent",
+      url: "https://dailypresent.metzner.uk",
+      icon: "/icons/dailypresent.svg",
+      accent: "#e9b949",
+      blurb: {
+        en: "An advent calendar you make yourself — 24 doors, one link.",
+        de: "Ein Adventkalender zum Selbermachen — 24 Türchen, ein Link.",
+      },
+      tag: { en: "Next.js · PWA", de: "Next.js · PWA" },
+    },
+    {
+      name: "Call It",
+      url: "https://callit.metzner.uk",
+      icon: "/icons/callit.svg",
+      accent: "#f2b544",
+      blurb: {
+        en: "The estimation question for your event — everyone guesses, one wins.",
+        de: "Die Schätzfrage für dein Event — alle tippen, einer liegt am nächsten.",
+      },
+      tag: { en: "Next.js", de: "Next.js" },
+    },
+    {
       name: "Tempo",
       url: "https://tempo.metzner.uk",
       icon: "/icons/tempo.svg",
@@ -109,18 +143,6 @@ export const config = {
         de: "Trainingstagebuch, das am Gerät bleibt. Kein Feed, keine Werbung.",
       },
       tag: { en: "Local-first", de: "Local-first" },
-    },
-    {
-      name: "Mulatschak",
-      url: "https://mulatschak.metzner.uk",
-      icon: "/icons/mulatschak.png",
-      accent: "#c2410c",
-      blurb: {
-        en: "The Austrian card game — in the browser and on Android, free.",
-        de: "Das österreichische Kartenspiel — im Browser und auf Android, gratis.",
-      },
-      tag: { en: "TypeScript", de: "TypeScript" },
-      demo: "mulatschak",
     },
     {
       name: "Overhead",

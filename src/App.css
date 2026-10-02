@@ -416,11 +416,11 @@
 }
 .grid-side {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 14px;
   margin-top: 14px;
 }
-/* below this the four tiles are ~150px wide and .side-name ellipsizes
+/* below this the tiles get too narrow and .side-name ellipsizes
    ("Mulatschak" → "Mula…") long before the page's 640px phone breakpoint */
 @media (max-width: 900px) {
   .grid-side {

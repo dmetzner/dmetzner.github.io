@@ -10,7 +10,7 @@ export type FeaturedProject = {
   // description is per-language
   description: Record<Lang, string>;
   language?: string;
-  tags?: string[];
+  tags?: Record<Lang, string[]>;
   logo?: "niceshops" | "catrobat"; // optional brand logo rendered on the card
   accent?: string; // optional brand accent colour (hover + logo)
   demo?: "niceshops" | "catrobat"; // optional interactive mini-demo rendered in the card body
@@ -68,9 +68,12 @@ export const config = {
       demo: "niceshops",
       description: {
         en: "Senior full-stack developer at niceshops — DevOps, backend, frontend. I help ship e-commerce at scale across the whole chain: from marketing to delivery.",
-        de: "Senior Full-Stack-Entwickler bei niceshops — DevOps, Backend, Frontend. Ich begleite E-Commerce in großem Maßstab über die ganze Kette: von Marketing bis Delivery.",
+        de: "Senior Full-Stack-Entwickler bei niceshops — DevOps, Backend, Frontend. Ich arbeite an E-Commerce im großen Stil mit, entlang der ganzen Kette: vom Marketing bis zur Auslieferung.",
       },
-      tags: ["Day job", "Full-stack", "Austria"],
+      tags: {
+        en: ["Day job", "Full-stack", "Austria"],
+        de: ["Hauptjob", "Full-Stack", "Österreich"],
+      },
     },
     {
       name: "Catroid / Catroweb",
@@ -81,7 +84,10 @@ export const config = {
         en: "Catrobat's free coding apps for kids — build on your phone with Catroid, share and remix on Catroweb. I support the share platform as a lead developer and product owner.",
         de: "Catrobats kostenlose Programmier-Apps für Kinder: mit Catroid am Handy programmieren, auf Catroweb teilen und remixen. Die Share-Plattform unterstütze ich als Lead Developer und Product Owner.",
       },
-      tags: ["Lead dev & PO", "Symfony", "Open source"],
+      tags: {
+        en: ["Lead dev & PO", "Symfony", "Open source"],
+        de: ["Lead Dev & PO", "Symfony", "Open Source"],
+      },
     },
   ] as FeaturedProject[],
 
@@ -177,7 +183,7 @@ export const config = {
   // connection is ever made. The anon key is public by design (RLS-safe: there
   // are no tables to reach); paste a project from an EU region for clean GDPR.
   // Privacy is preserved by *opt-in*: the browser connects (and only then sends
-  // an IP to Supabase) when the visitor clicks "enter the room" — never on load.
+  // an IP to Supabase) when the visitor clicks "Join the room" — never on load.
   room: {
     url: "https://ivvjxeirjofilyrhnkuu.supabase.co",
     anonKey: "sb_publishable_GvyuwPa9pPDx1yjSzwU4IA_Ny-V_jBc",
@@ -206,7 +212,7 @@ export const config = {
       privacy: "Privacy",
       roomIdle: "live",
       roomTitle: "Live visitors",
-      roomBody: "See who else is here right now — and send reactions together.",
+      roomBody: "See who else is here right now — and send everyone a reaction.",
       roomJoin: "Join the room",
       roomLeave: "leave",
       roomOnline: "here",
@@ -233,7 +239,7 @@ export const config = {
       privacy: "Datenschutz",
       roomIdle: "live",
       roomTitle: "Live-Besucher",
-      roomBody: "Sieh, wer gerade hier ist — und schickt euch gemeinsam Reaktionen.",
+      roomBody: "Sieh, wer gerade noch hier ist — und schick allen eine Reaktion.",
       roomJoin: "Raum betreten",
       roomLeave: "verlassen",
       roomOnline: "hier",

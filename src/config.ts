@@ -68,7 +68,7 @@ export const config = {
       demo: "niceshops",
       description: {
         en: "Senior full-stack developer at niceshops — DevOps, backend, frontend. I help ship e-commerce at scale across the whole chain: from marketing to delivery.",
-        de: "Senior Full-Stack-Entwickler bei niceshops — DevOps, Backend, Frontend. Ich bringe E-Commerce im großen Stil mit voran, entlang der ganzen Kette: vom Marketing bis zur Auslieferung.",
+        de: "Senior Full-Stack-Entwickler bei niceshops — DevOps, Backend, Frontend. Ich arbeite an E-Commerce im großen Stil mit, entlang der ganzen Kette: vom Marketing bis zur Auslieferung.",
       },
       tags: {
         en: ["Day job", "Full-stack", "Austria"],

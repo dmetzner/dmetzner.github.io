@@ -160,7 +160,7 @@ function Privacy({ de }: { de: boolean }) {
 
       <h3>Lokale Speicherung — keine Cookies</h3>
       <p>
-        Theme-, Sprach- und im „root"-Modus vorgenommene Textänderungen werden ausschließlich lokal
+        Theme-, Sprach- und im „root“-Modus vorgenommene Textänderungen werden ausschließlich lokal
         in deinem Browser (localStorage) gespeichert. Es werden keine Cookies gesetzt.
         {!config.analytics.goatcounter &&
           " Darüber hinaus werden keine Analyse- oder Tracking-Dienste eingesetzt."}
@@ -241,7 +241,7 @@ function Privacy({ de }: { de: boolean }) {
         <>
           <h3>Live room (optional)</h3>
           <p>
-            Only on your request (“enter the room”) does your browser open a realtime connection to
+            Only on your request (“Join the room”) does your browser open a realtime connection to
             Supabase (EU region); this transmits your IP address to Supabase. While you are in the
             room, others present at the same time see an anonymous presence count and the emoji
             reactions you trigger. No content is stored, no cookies are set, and no personal

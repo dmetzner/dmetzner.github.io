@@ -165,7 +165,7 @@ export function CatrowebSlider({ lang }: { lang: Lang }) {
   // failed → render nothing; the card still reads fine with its copy + tags
   if (failed) return null;
 
-  const label = lang === "de" ? "Beliebte Projekte gerade" : "Trending on the platform";
+  const label = lang === "de" ? "Gerade beliebt auf der Plattform" : "Trending on the platform";
   // one step = one tile width + one gap; tile width is (100% - (n-1) gaps) / n
   const step = `calc((100% - ${(PER_VIEW - 1) * GAP}px) / ${PER_VIEW} + ${GAP}px)`;
 
@@ -289,7 +289,7 @@ export function BrandsSlider({ lang }: { lang: Lang }) {
   return (
     <div className="demo demo-brands">
       <div className="brands-head">
-        {lang === "de" ? "Shops & Eigenmarken" : "Shops & own brands"}
+        {lang === "de" ? "Shops & Eigenmarken" : "Shops & in-house brands"}
       </div>
       <div className="brands-viewport">
         <div className="brands-track">

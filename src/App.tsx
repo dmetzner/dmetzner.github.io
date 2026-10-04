@@ -269,7 +269,7 @@ function FeaturedCard({ project, i, lang }: { project: FeaturedProject; i: numbe
             <i className="dot" /> {project.language}
           </span>
         )}
-        {project.tags?.map((t) => (
+        {project.tags?.[lang].map((t) => (
           <span className="tag" key={t}>
             {t}
           </span>

@@ -7,7 +7,7 @@ before changing `src/`.
 ## Stack
 
 - React 19 + TS (strict) + Vite 8, ESM. **npm** (not pnpm). Biome 2.x (lint+format), Vitest. (Exact versions: see `package.json`.)
-- framer-motion. Self-hosted fonts. No CSS framework — hand-rolled `*.css`.
+- Self-hosted fonts (variable woff2, one file per family + subset). No CSS framework — hand-rolled `*.css`.
 - Local LLM via `@huggingface/transformers` (WebGPU, lazy). Cookieless GoatCounter analytics.
 - Deploys to **GitHub Pages on every push to `main`** (`.github/workflows/deploy.yml`), custom domain.
 

@@ -12,7 +12,11 @@ function systemTheme(): Theme {
 }
 
 function storedPref(): ThemePref {
-  const saved = localStorage.getItem(KEY);
+  // localStorage throws when site data is blocked; an uncaught throw here blanks the page
+  let saved: string | null = null;
+  try {
+    saved = localStorage.getItem(KEY);
+  } catch {}
   return saved === "light" || saved === "dark" || saved === "system" ? saved : "system";
 }
 
@@ -26,8 +30,10 @@ export function useTheme(): [ThemePref, Theme, () => void, (p: ThemePref) => voi
   );
 
   useEffect(() => {
-    if (pref === "system") localStorage.removeItem(KEY);
-    else localStorage.setItem(KEY, pref);
+    try {
+      if (pref === "system") localStorage.removeItem(KEY);
+      else localStorage.setItem(KEY, pref);
+    } catch {}
 
     const apply = () => setResolved(pref === "system" ? systemTheme() : pref);
     apply();

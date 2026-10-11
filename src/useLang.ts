@@ -4,7 +4,11 @@ import type { Lang } from "./config";
 const KEY = "lang";
 
 function initialLang(): Lang {
-  const saved = localStorage.getItem(KEY);
+  // localStorage throws when site data is blocked; an uncaught throw here blanks the page
+  let saved: string | null = null;
+  try {
+    saved = localStorage.getItem(KEY);
+  } catch {}
   if (saved === "en" || saved === "de") return saved;
   // first visit: honour the browser's preferred language
   return navigator.language.toLowerCase().startsWith("de") ? "de" : "en";
@@ -15,7 +19,9 @@ export function useLang(): [Lang, (l: Lang) => void] {
   const [lang, setLang] = useState<Lang>(initialLang);
 
   useEffect(() => {
-    localStorage.setItem(KEY, lang);
+    try {
+      localStorage.setItem(KEY, lang);
+    } catch {}
     document.documentElement.lang = lang;
   }, [lang]);
 

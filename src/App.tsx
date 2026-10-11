@@ -336,6 +336,10 @@ export default function App() {
   const [root, setRoot] = useState(false);
   const [edits, setEdits] = useState<Edits>(loadEdits);
   const [legal, setLegal] = useState<LegalKind>(null);
+  // Stable on purpose: Legal's focus effect depends on onClose, and a fresh arrow per
+  // render re-ran it on every App update (e.g. the TIL feed landing), yanking focus
+  // back to the close button mid-read.
+  const closeLegal = useCallback(() => setLegal(null), []);
 
   // scroll-reveal refs (one per below-the-fold section)
   const projectsRef = useInView<HTMLElement>();
@@ -657,7 +661,7 @@ export default function App() {
         </p>
       </footer>
 
-      <Legal kind={legal} lang={lang} onClose={() => setLegal(null)} />
+      <Legal kind={legal} lang={lang} onClose={closeLegal} />
       <Room lang={lang} />
     </main>
   );

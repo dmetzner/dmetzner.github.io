@@ -113,11 +113,14 @@ export function useRoom(): Room {
           channel.track({ at: Date.now() });
           setConnecting(false);
           setJoined(true);
+        } else if (status === "CHANNEL_ERROR" || status === "TIMED_OUT") {
+          // without this the join button stays disabled on "connecting…" forever
+          leave();
         }
       });
     clientRef.current = client;
     channelRef.current = channel;
-  }, [available, addReaction]);
+  }, [available, addReaction, leave]);
 
   const send = useCallback(
     (emoji: string) => {

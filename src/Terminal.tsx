@@ -1,10 +1,18 @@
 import { type ReactNode, useEffect, useRef, useState } from "react";
+import { aiUnsupported } from "./aiSupport";
 import { track } from "./analytics";
 import { config, type Lang } from "./config";
 import { Duck } from "./Duck";
 import { Snake } from "./Snake";
 import { useAi } from "./useAi";
 import type { ThemePref } from "./useTheme";
+
+// checked before any model download: this browser would fetch ~1 GB and then crash
+const AI_UNSUPPORTED =
+  typeof navigator !== "undefined" &&
+  aiUnsupported(navigator.userAgent, navigator.vendor ?? "", "gpu" in navigator);
+const AI_UNSUPPORTED_MSG =
+  "🦆 the local model can't run in this Safari — try Safari 26+ or a WebGPU browser like Chrome.";
 
 type Line = { id: number; kind: "in" | "out" | "sys"; content: ReactNode };
 
@@ -265,6 +273,7 @@ export default function Terminal({
       case "ai":
         if (ai.status === "ready") push("out", "model already loaded 🦆 — `ask <question>`.");
         else if (ai.status === "loading") push("out", "already downloading… progress top-right ↗");
+        else if (AI_UNSUPPORTED) push("out", AI_UNSUPPORTED_MSG);
         else {
           ai.load();
           push("sys", "downloading a tiny local model (~0.5GB, first visit only — cached after).");
@@ -283,6 +292,8 @@ export default function Terminal({
         } else if (ai.status === "loading" || ai.status === "generating") {
           setPendingAsk(q);
           push("sys", "model still loading — queued your question, I'll answer once it's ready ↗");
+        } else if (AI_UNSUPPORTED) {
+          push("out", AI_UNSUPPORTED_MSG);
         } else {
           ai.load();
           setPendingAsk(q);

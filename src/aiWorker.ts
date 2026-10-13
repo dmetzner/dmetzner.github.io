@@ -6,7 +6,15 @@ import { type AllTasks, env, pipeline, TextStreamer } from "@huggingface/transfo
 env.allowLocalModels = false;
 // single-threaded WASM avoids SharedArrayBuffer, which needs COOP/COEP headers
 // that a static host (GitHub Pages) can't set. slower, but works everywhere.
-if (env.backends?.onnx?.wasm) env.backends.onnx.wasm.numThreads = 1;
+if (env.backends?.onnx?.wasm) {
+  env.backends.onnx.wasm.numThreads = 1;
+  // transformers.js points ORT at cdn.jsdelivr.net on import; clearing that makes ORT
+  // fall back to the runtime Vite already bundles (the .wasm is emitted into
+  // dist/assets), so no visitor IP reaches jsDelivr.
+  // Always the asyncify build — transformers picks the plain one for Safari < 26 without
+  // WebGPU, so Terminal refuses that browser before any download (aiSupport.ts).
+  env.backends.onnx.wasm.wasmPaths = undefined;
+}
 
 // instruct model — swap here to trade size for quality.
 // (0.5B is smaller but rambles; 1.5B actually answers properly.)

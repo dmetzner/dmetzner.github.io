@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { type Brand, type Lang, niceshopsBrands } from "./config";
+import { type Lang, niceshopsBrands } from "./config";
 import { safeUrl } from "./url";
 
 // ─────────────────────────────────────────────────────────────
@@ -273,12 +273,9 @@ export function CatrowebSlider({ lang }: { lang: Lang }) {
 // ═══════════════════════ NICESHOPS ═══════════════════════
 // A continuously scrolling marquee of the shops & own-labels
 // niceshops runs — the same brand strip the storefront shows,
-// rebuilt here from the brand list in config. Logos load straight
-// from the niceshops Storyblok CDN (cross-origin <img> needs no
-// CORS). Hover pauses; each logo links to its shop.
-
-// Storyblok resize transform for crisp logos at ~2x the render height.
-const brandLogo = (b: Brand) => `${b.logo}/m/240x0`;
+// rebuilt here from the brand list in config. Logos are self-hosted
+// (public/brands/) so no visitor IP reaches a third-party CDN. Hover
+// pauses; each logo links to its shop.
 
 export function BrandsSlider({ lang }: { lang: Lang }) {
   // Two back-to-back copies make the -50% marquee loop seamless. The clones
@@ -303,7 +300,7 @@ export function BrandsSlider({ lang }: { lang: Lang }) {
               rel="noreferrer"
               tabIndex={i >= n ? -1 : undefined}
             >
-              <img src={brandLogo(b)} alt="" loading="lazy" decoding="async" />
+              <img src={b.logo} alt="" loading="lazy" decoding="async" />
               <span className="sr-only">{b.name} ↗</span>
             </a>
           ))}

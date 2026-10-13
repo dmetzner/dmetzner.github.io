@@ -1471,16 +1471,15 @@
   font-size: 0.76rem;
   letter-spacing: 0.02em;
   cursor: pointer;
-  opacity: 0.72; /* understated at rest, lights up on intent */
+  /* understated at rest via --text-faint (already AA), lights up on intent.
+     No opacity dimming: it pushed the label below 4.5:1 on the light theme. */
   transition:
-    opacity 0.2s,
     color 0.2s,
     border-color 0.2s;
 }
 .room-pill:hover,
 .room-fab:focus-within .room-pill,
 .room-fab[data-open] .room-pill {
-  opacity: 1;
   color: var(--text-dim);
   border-color: color-mix(in srgb, var(--cyan) 40%, var(--panel-border));
 }

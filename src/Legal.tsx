@@ -137,7 +137,7 @@ function Privacy({ de }: { de: boolean }) {
   return de ? (
     <div className="legal-body">
       <h2>Datenschutzerklärung</h2>
-      <p className="legal-dim">Stand: Juni 2026</p>
+      <p className="legal-dim">Stand: Oktober 2026</p>
 
       <h3>Hosting</h3>
       <p>
@@ -157,6 +157,15 @@ function Privacy({ de }: { de: boolean }) {
           </p>
         </>
       )}
+
+      <h3>Fehlerprotokollierung</h3>
+      <p>
+        Tritt auf dieser Seite ein JavaScript-Fehler auf, wird ein Fehlerbericht an GlitchTip
+        (app.glitchtip.com) gesendet: Fehlermeldung und Stacktrace. Technisch bedingt erreichen
+        dabei deine IP-Adresse und Browserkennung (User-Agent) den Dienst; der Bericht selbst
+        enthält keine Nutzerdaten, Cookies oder Request-Header. Rechtsgrundlage: berechtigtes
+        Interesse an einer fehlerfreien Website (Art. 6 Abs. 1 lit. f DSGVO).
+      </p>
 
       <h3>Lokale Speicherung — keine Cookies</h3>
       <p>
@@ -200,7 +209,9 @@ function Privacy({ de }: { de: boolean }) {
   ) : (
     <div className="legal-body">
       <h2>Privacy Policy</h2>
-      <p className="legal-dim">Last updated: June 2026 · The German version is legally binding.</p>
+      <p className="legal-dim">
+        Last updated: October 2026 · The German version is legally binding.
+      </p>
 
       <h3>Hosting</h3>
       <p>
@@ -219,6 +230,15 @@ function Privacy({ de }: { de: boolean }) {
           </p>
         </>
       )}
+
+      <h3>Error reporting</h3>
+      <p>
+        If a JavaScript error occurs on this site, an error report is sent to GlitchTip
+        (app.glitchtip.com): the error message and stack trace. For technical reasons your IP
+        address and browser identifier (user agent) reach the service; the report itself contains no
+        user data, cookies or request headers. Legal basis: legitimate interest in a working website
+        (Art. 6(1)(f) GDPR).
+      </p>
 
       <h3>Local storage — no cookies</h3>
       <p>

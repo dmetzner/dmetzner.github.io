@@ -252,8 +252,9 @@ export const config = {
 // ─────────────────────────────────────────────────────────────
 //  niceshops brands — the shops & own-labels shown in the card's
 //  logo marquee. `path` is relative to niceshops.com; `logo` is a
-//  Storyblok CDN base URL (a resize transform is appended at render
-//  time). Lifted from the niceshops storefront's own brand slider.
+//  self-hosted file in public/brands/ (240px wide, taken from the
+//  niceshops storefront's own brand slider) so no visitor IP reaches
+//  the storefront's CDN.
 // ─────────────────────────────────────────────────────────────
 export type Brand = { name: string; path: string; logo: string };
 
@@ -261,106 +262,106 @@ export const niceshopsBrands: Brand[] = [
   {
     name: "3DJake",
     path: "/shops/3djake",
-    logo: "https://a.storyblok.com/f/178467/281x91/1f37d76004/01_logo_3djake_90px.png",
+    logo: "/brands/3djake.webp",
   },
   {
     name: "PURE SKIN FOOD",
     path: "/eigenmarken/pure-skin-food",
-    logo: "https://a.storyblok.com/f/178467/281x91/604216ab29/01_logo_psf_90px.png",
+    logo: "/brands/pure-skin-food.webp",
   },
   {
     name: "Ecco Verde",
     path: "/shops/ecco-verde",
-    logo: "https://a.storyblok.com/f/178467/463x91/209a5e6a8d/logo_eccoverde_90px.png",
+    logo: "/brands/ecco-verde.webp",
   },
   {
     name: "Ayurveda101",
     path: "/shops/ayurveda101",
-    logo: "https://a.storyblok.com/f/178467/232x91/49b55437cf/logo_ayurveda101_90px.png",
+    logo: "/brands/ayurveda101.webp",
   },
   {
     name: "Ecosplendo",
-    path: "/shops/Ecosplendo",
-    logo: "https://a.storyblok.com/f/178467/490x148/3c474eded2/02_logo_ecosplendo_490x148px.png",
+    path: "/shops/ecosplendo",
+    logo: "/brands/ecosplendo.webp",
   },
   {
     name: "bloomling",
     path: "/shops/bloomling",
-    logo: "https://a.storyblok.com/f/178467/229x91/3a6a7409f2/logo_bloomling_90px.png",
+    logo: "/brands/bloomling.webp",
   },
   {
     name: "Cosmeterie",
     path: "/shops/cosmeterie",
-    logo: "https://a.storyblok.com/f/178467/319x90/9839fc1f62/logo_cosmeterie_90px.png",
+    logo: "/brands/cosmeterie.webp",
   },
   {
     name: "Equus Vitalis",
     path: "/shops/equus-vitalis",
-    logo: "https://a.storyblok.com/f/178467/454x91/331d9d2589/logo_equusvitalis_90px.png",
+    logo: "/brands/equus-vitalis.webp",
   },
   {
     name: "From Austria",
     path: "/shops/from-austria",
-    logo: "https://a.storyblok.com/f/178467/314x91/a48d10bbd0/logo_fromaustria_90px.png",
+    logo: "/brands/from-austria.webp",
   },
   {
     name: "Peganto",
     path: "/shops/peganto",
-    logo: "https://a.storyblok.com/f/178467/263x91/3e248563cb/logo_peganto_90px.png",
+    logo: "/brands/peganto.webp",
   },
   {
     name: "Babymondino",
     path: "/shops/babymondino",
-    logo: "https://a.storyblok.com/f/178467/304x91/2505d5cec5/logo_babymondino_90px.png",
+    logo: "/brands/babymondino.webp",
   },
   {
     name: "Geero",
     path: "/eigenmarken/geero",
-    logo: "https://a.storyblok.com/f/178467/281x91/7799eb5a47/logo_geero_90px.png",
+    logo: "/brands/geero.webp",
   },
   {
     name: "Interismo",
     path: "/shops/interismo",
-    logo: "https://a.storyblok.com/f/178467/280x91/3312d163f8/logo_interismo_90px.png",
+    logo: "/brands/interismo.webp",
   },
   {
     name: "oh feliz",
     path: "/shops/oh-feliz",
-    logo: "https://a.storyblok.com/f/178467/221x91/10d6d9f81f/logo_ohfeliz_90px.png",
+    logo: "/brands/oh-feliz.webp",
   },
   {
     name: "olibetta",
     path: "/shops/olibetta",
-    logo: "https://a.storyblok.com/f/178467/486x91/28c33dda8f/logo_olibetta_90px.png",
+    logo: "/brands/olibetta.webp",
   },
   {
     name: "Piccantino",
     path: "/shops/piccantino",
-    logo: "https://a.storyblok.com/f/178467/359x91/896b2ab00b/logo_piccantino_90px.png",
+    logo: "/brands/piccantino.webp",
   },
   {
     name: "playPolis",
     path: "/shops/playpolis",
-    logo: "https://a.storyblok.com/f/178467/590x91/5df2891b56/logo_playpolis_90px.png",
+    logo: "/brands/playpolis.webp",
   },
   {
     name: "pools.shop",
     path: "/shops/pools-shop",
-    logo: "https://a.storyblok.com/f/178467/360x91/7f0d7956bc/logo_poolsshop_90px.png",
+    logo: "/brands/pools-shop.webp",
   },
   {
     name: "saaza",
     path: "/shops/saaza",
-    logo: "https://a.storyblok.com/f/178467/253x91/c990919af8/logo_saaza_90px.png",
+    logo: "/brands/saaza.webp",
   },
   {
     name: "VitalAbo",
     path: "/shops/vitalabo",
-    logo: "https://a.storyblok.com/f/178467/399x91/71d295c0e5/logo_vitalabo_90px.png",
+    logo: "/brands/vitalabo.webp",
   },
   {
     name: "Zoolini",
     path: "/shops/zoolini",
-    logo: "https://a.storyblok.com/f/178467/231x90/616b5c8c0f/logo_zoolini_90px.png",
+    logo: "/brands/zoolini.webp",
   },
 ];

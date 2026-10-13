@@ -158,6 +158,14 @@ function Privacy({ de }: { de: boolean }) {
         </>
       )}
 
+      <h3>Catrobat-Projektvorschau</h3>
+      <p>
+        Sobald du zum Catroweb-Projekt scrollst, lädt dein Browser die aktuell beliebten Projekte
+        samt Vorschaubildern von share.catrobat.org; dabei wird deine IP-Adresse an den Betreiber
+        der Plattform übertragen. Vorher wird nichts geladen. Rechtsgrundlage: berechtigtes
+        Interesse an der Darstellung des Projekts (Art. 6 Abs. 1 lit. f DSGVO).
+      </p>
+
       <h3>Fehlerprotokollierung</h3>
       <p>
         Tritt auf dieser Seite ein JavaScript-Fehler auf, wird ein Fehlerbericht an GlitchTip
@@ -181,8 +189,9 @@ function Privacy({ de }: { de: boolean }) {
         wird nur dir angezeigt.
         <br />
         <b>ai</b> lädt auf deine Eingabe hin ein KI-Modell von huggingface.co — dabei wird deine
-        IP-Adresse an den Anbieter übertragen. Das Modell läuft anschließend vollständig lokal in
-        deinem Browser; deine Eingaben verlassen dein Gerät nicht.
+        IP-Adresse an den Anbieter übertragen. Die dafür nötige Laufzeitumgebung kommt von dieser
+        Website selbst. Das Modell läuft anschließend vollständig lokal in deinem Browser; deine
+        Eingaben verlassen dein Gerät nicht.
       </p>
 
       {config.room.url && config.room.anonKey && (
@@ -231,6 +240,14 @@ function Privacy({ de }: { de: boolean }) {
         </>
       )}
 
+      <h3>Catrobat project preview</h3>
+      <p>
+        Once you scroll to the Catroweb project, your browser loads the currently trending projects
+        and their preview images from share.catrobat.org; this transmits your IP address to the
+        platform's operator. Nothing is loaded before that. Legal basis: legitimate interest in
+        presenting the project (Art. 6(1)(f) GDPR).
+      </p>
+
       <h3>Error reporting</h3>
       <p>
         If a JavaScript error occurs on this site, an error report is sent to GlitchTip
@@ -253,8 +270,8 @@ function Privacy({ de }: { de: boolean }) {
         only to you.
         <br />
         <b>ai</b> loads an AI model from huggingface.co on your request — this transmits your IP
-        address to the provider. The model then runs entirely locally in your browser; your inputs
-        never leave your device.
+        address to the provider. The runtime it needs is served by this site itself. The model then
+        runs entirely locally in your browser; your inputs never leave your device.
       </p>
 
       {config.room.url && config.room.anonKey && (

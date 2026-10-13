@@ -11,8 +11,8 @@ if (env.backends?.onnx?.wasm) {
   // transformers.js points ORT at cdn.jsdelivr.net on import; clearing that makes ORT
   // fall back to the runtime Vite already bundles (the .wasm is emitted into
   // dist/assets), so no visitor IP reaches jsDelivr.
-  // ponytail: always the asyncify build — transformers picks the plain one for Safari < 26
-  // without WebGPU; ship that variant too if those users report breakage.
+  // Always the asyncify build — transformers picks the plain one for Safari < 26 without
+  // WebGPU, so Terminal refuses that browser before any download (aiSupport.ts).
   env.backends.onnx.wasm.wasmPaths = undefined;
 }
 

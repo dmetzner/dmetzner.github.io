@@ -6,8 +6,8 @@
 ## The gate
 
 Run `npm run check` (`tsc -b && biome check . && vitest run`) before reporting done. Biome owns
-formatting. Tests cover pure logic only (`snakeEngine`, `url`, config) — don't test
-canvas/worker/DOM.
+formatting. Vitest runs in `node`; a DOM test opts in per file with
+`// @vitest-environment jsdom` (see `Terminal.test.tsx`). Don't test canvas or the AI worker.
 
 ## Invariants
 
